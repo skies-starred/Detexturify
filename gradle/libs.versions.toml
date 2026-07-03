@@ -1,0 +1,52 @@
+[versions]
+loom = "1.15-SNAPSHOT"
+kotlin = "2.3.0"
+
+devauth = "1.2.2"
+library = "009"
+
+fabric-loader = "0.18.4"
+fabric-language-kotlin = "1.13.8+kotlin.2.3.0"
+
+fabric-api-1-21-11 = "0.140.2+1.21.11"
+fabric-api-26-1 = "0.144.0+26.1"
+fabric-api-26-2 = "0.154.0+26.2"
+
+rc-1-21-11 = "3.11.3"
+rc-26-1 = "4.0.0-beta.2"
+rc-26-2 = "5.0.0"
+
+rck-1-21 = "3.5.15"
+rck-26-1 = "4.0.0-beta.1"
+rck-26-2 = "4.0.0-beta.1"
+
+parchment-1-21-11 = "2025.12.20"
+
+[libraries]
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+fabric-language-kotlin = { module = "net.fabricmc:fabric-language-kotlin", version.ref = "fabric-language-kotlin" }
+
+devauth = { module = "me.djtheredstoner:DevAuth-fabric", version.ref = "devauth" }
+
+fabric-api-1-21-11 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api-1-21-11" }
+fabric-api-26-1 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api-26-1" }
+fabric-api-26-2 = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric-api-26-2" }
+
+library-1-21-11 = { module = "com.github.skies-starred.library:library-1.21.11", version.ref = "library" }
+library-26-1 = { module = "com.github.skies-starred.library:library-26.1", version.ref = "library" }
+library-26-2 = { module = "com.github.skies-starred.library:library-26.2", version.ref = "library" }
+
+rc-1-21-11 = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-1.21.11", version.ref = "rc-1-21-11" }
+rc-26-1 = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-26.1-rc-1", version.ref = "rc-26-1" }
+rc-26-2 = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-26.2", version.ref = "rc-26-2" }
+
+rck-1-21-11 = { module = "com.teamresourceful.resourcefulconfigkt:resourcefulconfigkt-fabric-1.21.5", version.ref = "rck-1-21" }
+rck-26-1 = { module = "com.teamresourceful.resourcefulconfigkt:resourcefulconfigkt-26.1-rc-1", version.ref = "rck-26-1" }
+rck-26-2 = { module = "com.teamresourceful.resourcefulconfigkt:resourcefulconfigkt-26.1-rc-1", version.ref = "rck-26-2" }
+
+parchment-1-21-11 = { module = "org.parchmentmc.data:parchment-1.21.11", version.ref = "parchment-1-21-11" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+loom-obf = { id = "fabric-loom", version.ref = "loom" }
+loom = { id = "net.fabricmc.fabric-loom", version.ref = "loom" }

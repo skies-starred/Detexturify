@@ -1,0 +1,17 @@
+{
+  "required": false,
+  "package": "foo.starred.detexturify.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "mixins.ItemStackMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "mixins.ClientCommonPacketListenerImplMixin",
+    "mixins.GuiGraphicsMixin",
+    "mixins.ItemModelResolverMixin",
+    "mixins.MixinPlayerHeadSpecialRenderer"
+  ]
+}
