@@ -10,7 +10,6 @@ import foo.starred.detexturify.data.SkyBlockItem
 import foo.starred.detexturify.utils.NetworkUtils.request
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.core.component.DataComponents
-import net.minecraft.world.item.component.CustomData
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import xyz.aerii.library.api.client
@@ -20,11 +19,10 @@ import xyz.aerii.library.api.nextTick
 import xyz.aerii.library.handlers.data.AbstractScribble
 import xyz.aerii.library.handlers.parser.parse
 import xyz.aerii.library.kommand.ICommand
-import java.util.concurrent.CopyOnWriteArraySet
 import kotlin.jvm.optionals.getOrNull
 
 object Detexturify : ClientModInitializer, ICommand {
-    const val modVersion: String = /*$ mod_version*/ "0.0.1"
+    const val modVersion: String = /*$ mod_version*/ "0.0.2"
     const val modId: String = /*$ mod_id*/ "detexturify"
     const val modName: String = /*$ mod_name*/ "Detexturify"
     const val discordUrl: String = "https://discord.gg/starred"
