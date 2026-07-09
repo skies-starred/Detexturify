@@ -9,6 +9,16 @@ object MainCategory : CategoryKt("Main") {
         description = Literal("Whether the mod is enabled.")
     }.observe()
 
+    var preventDownload by boolean(true) {
+        name = Literal("Prevent download")
+        description = Literal("Prevents the texture pack from being downloaded.")
+    }.observe()
+
+    var vanillaTooltip by boolean(true) {
+        name = Literal("Vanilla tooltip")
+        description = Literal("Restores the vanilla tooltip. Only useful if you use \"Prevent download\".")
+    }.observe()
+
     var retexture by boolean(true) {
         name = Literal("Retexture items")
         description = Literal("Retextures items to be how they were like before the update.")

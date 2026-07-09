@@ -14,11 +14,16 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(value = GuiGraphics.class, priority = Integer.MAX_VALUE)
 public class GuiGraphicsMixin {
     @Unique
-    private static int detexturify$enabled = MainCategory.INSTANCE.getEnabled().getValue() ? 1 : 0;
+    private static boolean detexturify$bool = MainCategory.INSTANCE.getEnabled().getValue() && MainCategory.INSTANCE.getVanillaTooltip().getValue();
 
     static {
         MainCategory.INSTANCE.getEnabled().onChange(bool -> {
-            detexturify$enabled = bool ? 1 : 0;
+            detexturify$bool = bool && MainCategory.INSTANCE.getVanillaTooltip().getValue();
+            return Unit.INSTANCE;
+        });
+
+        MainCategory.INSTANCE.getVanillaTooltip().onChange(bool -> {
+            detexturify$bool = bool && MainCategory.INSTANCE.getEnabled().getValue();
             return Unit.INSTANCE;
         });
     }
@@ -27,7 +32,7 @@ public class GuiGraphicsMixin {
     @ModifyVariable(method = "renderTooltip", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private Identifier detexturify$renderTooltip(Identifier background) {
         if (background == null) return null;
-        if (detexturify$enabled == 0) return background;
+        if (!detexturify$bool) return background;
         if (background.getNamespace().equals("hypixel_skyblock")) return null;
         return background;
     }

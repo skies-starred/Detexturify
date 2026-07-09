@@ -12,6 +12,7 @@
     "mixins.ClientCommonPacketListenerImplMixin",
     "mixins.GuiGraphicsMixin",
     "mixins.ItemModelResolverMixin",
-    "mixins.MixinPlayerHeadSpecialRenderer"
+    "mixins.MixinPlayerHeadSpecialRenderer",
+    "mixins.TooltipRenderUtilMixin"
   ]
 }

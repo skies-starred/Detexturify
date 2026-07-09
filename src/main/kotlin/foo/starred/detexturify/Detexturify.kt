@@ -39,6 +39,9 @@ object Detexturify : ClientModInitializer, ICommand {
     @JvmField
     var MAP: Map<String, SkyBlockItem> = mapOf()
 
+    @JvmField
+    var texture: Boolean = false
+
     override fun onInitializeClient() {
         Config.toString()
 
