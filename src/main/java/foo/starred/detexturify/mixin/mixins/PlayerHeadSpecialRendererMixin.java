@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.Optional;
 
 @Mixin(PlayerHeadSpecialRenderer.class)
-public class MixinPlayerHeadSpecialRenderer {
+public class PlayerHeadSpecialRendererMixin {
     @Unique
     private static boolean detexturify$bool = MainCategory.INSTANCE.getEnabled().getValue() && MainCategory.INSTANCE.getRetexture().getValue();
 
@@ -40,6 +40,7 @@ public class MixinPlayerHeadSpecialRenderer {
     private Object detexturify$extractArgument(Object original, @Local(argsOnly = true) ItemStack stack) {
         if (!detexturify$bool) return original;
         if (stack.isEmpty()) return original;
+        if (original != null) return original;
 
         final ItemStackDuck b = (ItemStackDuck) (Object) stack;
         final ResolvableProfile c = b.detexturify$profile();
