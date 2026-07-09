@@ -7,6 +7,7 @@ import com.mojang.serialization.Codec
 import com.teamresourceful.resourcefulconfig.api.client.ResourcefulConfigScreen
 import foo.starred.detexturify.config.Config
 import foo.starred.detexturify.data.SkyBlockItem
+import foo.starred.detexturify.updater.ModUpdater
 import foo.starred.detexturify.utils.NetworkUtils.request
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.core.component.DataComponents
@@ -44,6 +45,7 @@ object Detexturify : ClientModInitializer, ICommand {
 
     override fun onInitializeClient() {
         Config.toString()
+        ModUpdater.toString()
 
         command(modId) {
             executes {

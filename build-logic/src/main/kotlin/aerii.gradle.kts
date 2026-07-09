@@ -62,6 +62,7 @@ repositories {
     strictMaven("https://maven.teamresourceful.com/repository/maven-public/", "tech.thatgravyboat", "com.terraformersmc", "earth.terrarium", "com.teamresourceful", "me.owdding")
     strictMaven("https://maven.parchmentmc.org/", "org.parchmentmc")
     strictMaven("https://jitpack.io", "com.github.skies-starred")
+    strictMaven("https://repo.nea.moe/releases", "moe.nea")
 }
 
 dependencies {
@@ -76,6 +77,7 @@ dependencies {
     shadow("rc".versioned)
     shadow("rck".versioned)
     shadow("library".versioned)
+    shadow("autoupdate".global)
 
     if (new) return@dependencies
     "mappings"(loom.layered {
