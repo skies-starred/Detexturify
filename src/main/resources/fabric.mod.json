@@ -8,6 +8,8 @@
     "Starred"
   ],
   "contact": {},
+  "license": "BSD 3-Clause",
+  "icon": "assets/detexturify/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
