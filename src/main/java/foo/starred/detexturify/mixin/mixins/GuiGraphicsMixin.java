@@ -33,7 +33,7 @@ public class GuiGraphicsMixin {
     private Identifier detexturify$renderTooltip(Identifier background) {
         if (background == null) return null;
         if (!detexturify$bool) return background;
-        if (background.getNamespace().equals("hypixel_skyblock")) return null;
-        return background;
+        if (!background.getNamespace().equals("hypixel_skyblock")) return background;
+        return null;
     }
 }
