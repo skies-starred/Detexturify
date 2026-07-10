@@ -14,6 +14,11 @@ object MainCategory : CategoryKt("Main") {
         description = Literal("Prevents the texture pack from being downloaded.")
     }.observe()
 
+    var vanillaColor by boolean(true) {
+        name = Literal("Vanilla colors")
+        description = Literal("Prevents Hypixel from loading custom color shaders.")
+    }
+
     var vanillaTooltip by boolean(true) {
         name = Literal("Vanilla tooltip")
         description = Literal("Restores the vanilla tooltip. Only useful if you use \"Prevent download\".")

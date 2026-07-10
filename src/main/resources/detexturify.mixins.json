@@ -13,6 +13,7 @@
     "mixins.GuiGraphicsMixin",
     "mixins.ItemModelResolverMixin",
     "mixins.PlayerHeadSpecialRendererMixin",
+    "mixins.ShaderManagerMixin",
     "mixins.TooltipRenderUtilMixin"
   ]
 }
