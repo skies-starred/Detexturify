@@ -29,8 +29,18 @@ object MainCategory : CategoryKt("Main") {
         description = Literal("The method to use to re-texture items.")
     }.observe()
 
+    var filterType by enum(FilterType.WHITELIST) {
+        name = Literal("Filter type")
+        description = Literal("Determines which items use custom textures. Use Blacklist to apply custom textures to all items except those listed, or Whitelist to apply custom textures only to the listed items.\nTry running \"/detexturify whitelist\" and \"/detexturify blacklist\"!")
+    }
+
     enum class RetextureType {
         VISUAL,
         COMPONENT;
+    }
+
+    enum class FilterType {
+        WHITELIST,
+        BLACKLIST;
     }
 }

@@ -38,6 +38,9 @@ object Detexturify : ClientModInitializer, ICommand {
     val WHITELIST: AbstractScribble.Value<MutableSet<String>> = SCRIBBLE.mutableSet("whitelist", Codec.STRING)
 
     @JvmField
+    val BLACKLIST: AbstractScribble.Value<MutableSet<String>> = SCRIBBLE.mutableSet("blacklist", Codec.STRING)
+
+    @JvmField
     var MAP: Map<String, SkyBlockItem> = mapOf()
 
     @JvmField
@@ -53,6 +56,7 @@ object Detexturify : ClientModInitializer, ICommand {
 
                 " <dark_gray>- <green>/detexturify config <dark_gray>- <green>Opens config".parse().lie()
                 " <dark_gray>- <green>/detexturify whitelist <dark_gray>- <green>Whitelist items".parse().lie()
+                " <dark_gray>- <green>/detexturify blacklist <dark_gray>- <green>Blacklist items".parse().lie()
             }
 
             "help" {
@@ -60,6 +64,7 @@ object Detexturify : ClientModInitializer, ICommand {
 
                 " <dark_gray>- <green>/detexturify config <dark_gray>- <green>Opens config".parse().lie()
                 " <dark_gray>- <green>/detexturify whitelist <dark_gray>- <green>Whitelist items".parse().lie()
+                " <dark_gray>- <green>/detexturify blacklist <dark_gray>- <green>Blacklist items".parse().lie()
             }
 
             "config" {
@@ -104,6 +109,43 @@ object Detexturify : ClientModInitializer, ICommand {
             "whitelist" / "list" {
                 "<#FAB387>[Detexturify]<r> Whitelisted items:".parse(true).lie()
                 for (v in WHITELIST.value) " <dark_gray>- <green>$v".parse().lie()
+            }
+
+            "blacklist" {
+                "<#FAB387>[Detexturify]<r> Blacklist commands:".parse(true).lie()
+
+                " <dark_gray>- <green>/detexturify blacklist list".parse().lie()
+                " <dark_gray>- <green>/detexturify blacklist add".parse().lie()
+                " <dark_gray>- <green>/detexturify blacklist remove".parse().lie()
+            }
+
+            "blacklist" / "add" {
+                val held = held?.takeIf { !it.isEmpty } ?: return@invoke "<#FAB387>[Detexturify]<r> Not holding anything!".parse(true).lie()
+                val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke "<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true).lie()
+
+                if (BLACKLIST.value.contains(id)) {
+                    return@invoke "<#FAB387>[Detexturify]<r> Item already exists in blacklist!".parse(true).lie()
+                }
+
+                BLACKLIST.update { add(id) }
+                "<#FAB387>[Detexturify]<r> Successfully added item to blacklist!".parse(true).lie()
+            }
+
+            "blacklist" / "remove" {
+                val held = held?.takeIf { !it.isEmpty } ?: return@invoke "<#FAB387>[Detexturify]<r> Not holding anything!".parse(true).lie()
+                val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke "<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true).lie()
+
+                if (!BLACKLIST.value.contains(id)) {
+                    return@invoke "<#FAB387>[Detexturify]<r> Item does not exist in blacklist!".parse(true).lie()
+                }
+
+                BLACKLIST.update { remove(id) }
+                "<#FAB387>[Detexturify]<r> Successfully removed item from blacklist!".parse(true).lie()
+            }
+
+            "blacklist" / "list" {
+                "<#FAB387>[Detexturify]<r> Blacklisted items:".parse(true).lie()
+                for (v in BLACKLIST.value) " <dark_gray>- <green>$v".parse().lie()
             }
         }
 

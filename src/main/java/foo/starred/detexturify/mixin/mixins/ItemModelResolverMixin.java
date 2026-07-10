@@ -75,17 +75,19 @@ public class ItemModelResolverMixin {
         if (e.isEmpty()) return original;
 
         final String f = e.get().replace(":", "-");
-        if (Detexturify.WHITELIST.getValue().contains(f)) {
+        final boolean g = MainCategory.INSTANCE.getFilterType() == MainCategory.FilterType.WHITELIST ? !Detexturify.WHITELIST.getValue().contains(f) : Detexturify.BLACKLIST.getValue().contains(f);
+
+        if (!g) {
             b.detexturify$id(a);
             return original;
         }
 
-        final SkyBlockItem g = Detexturify.MAP.get(f);
-        if (g == null) return original;
+        final SkyBlockItem h = Detexturify.MAP.get(f);
+        if (h == null) return original;
 
-        final Identifier h = g.getId();
-        b.detexturify$id(h);
+        final Identifier i = h.getId();
+        b.detexturify$id(i);
 
-        return h;
+        return i;
     }
 }
