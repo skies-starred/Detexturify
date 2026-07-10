@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor'
-@Mixin(value = GuiGraphics.class, priority = Integer.MAX_VALUE)
+@Mixin(value = GuiGraphics.class, priority = Integer.MIN_VALUE)
 public class GuiGraphicsMixin {
     @Unique
     private static boolean detexturify$bool = MainCategory.INSTANCE.getEnabled().getValue() && MainCategory.INSTANCE.getVanillaTooltip().getValue();
