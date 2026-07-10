@@ -54,6 +54,7 @@ public class ItemModelResolverMixin {
         if (stack.isEmpty()) return original;
 
         final Identifier a = (Identifier) original;
+        if (a == null) return null;
         if (!a.getNamespace().equals("hypixel_skyblock")) return original;
 
         final ItemStackDuck b = (ItemStackDuck) (Object) stack;
