@@ -91,7 +91,7 @@ object Detexturify : ClientModInitializer, ICommand {
                 }
 
                 WHITELIST.update { add(id) }
-                "<#FAB387>[Detexturify]<r> Successfully added item to whitelist!".parse(true).lie()
+                "<#FAB387>[Detexturify]<r> Successfully added item to whitelist! You may need to change servers to view changes.".parse(true).lie()
             }
 
             "whitelist" / "remove" {
@@ -103,7 +103,7 @@ object Detexturify : ClientModInitializer, ICommand {
                 }
 
                 WHITELIST.update { remove(id) }
-                "<#FAB387>[Detexturify]<r> Successfully removed item from whitelist!".parse(true).lie()
+                "<#FAB387>[Detexturify]<r> Successfully removed item from whitelist! You may need to change servers to view changes.".parse(true).lie()
             }
 
             "whitelist" / "list" {
@@ -128,7 +128,7 @@ object Detexturify : ClientModInitializer, ICommand {
                 }
 
                 BLACKLIST.update { add(id) }
-                "<#FAB387>[Detexturify]<r> Successfully added item to blacklist!".parse(true).lie()
+                "<#FAB387>[Detexturify]<r> Successfully added item to blacklist! You may need to change servers to view changes.".parse(true).lie()
             }
 
             "blacklist" / "remove" {
@@ -140,7 +140,7 @@ object Detexturify : ClientModInitializer, ICommand {
                 }
 
                 BLACKLIST.update { remove(id) }
-                "<#FAB387>[Detexturify]<r> Successfully removed item from blacklist!".parse(true).lie()
+                "<#FAB387>[Detexturify]<r> Successfully removed item from blacklist! You may need to change servers to view changes.".parse(true).lie()
             }
 
             "blacklist" / "list" {

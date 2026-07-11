@@ -9,6 +9,12 @@ interface ItemStackDuck {
     fun `detexturify$id`(): Identifier?
     fun `detexturify$id`(identifier: Identifier?)
 
+    fun `detexturify$special`(): Int
+    fun `detexturify$special`(int: Int)
+
+    fun `detexturify$filtered`(): Boolean?
+    fun `detexturify$filtered`(int: Boolean?)
+
     fun `detexturify$profile`(): ResolvableProfile?
     fun `detexturify$profile`(profile: ResolvableProfile?)
 }

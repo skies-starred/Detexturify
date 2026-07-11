@@ -17,8 +17,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.util.Optional;
-
 @Mixin(PlayerHeadSpecialRenderer.class)
 public class PlayerHeadSpecialRendererMixin {
     @Unique
@@ -47,10 +45,10 @@ public class PlayerHeadSpecialRendererMixin {
         if (c != null) return c;
 
         final CompoundTag d = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        final Optional<String> e = d.getString("id");
-        if (e.isEmpty()) return original;
+        final String e = d.getStringOr("id", null);
+        if (e == null) return original;
 
-        final String f = e.get().replace(":", "-");
+        final String f = e.replace(':', '-');
         final SkyBlockItem g = Detexturify.MAP.get(f);
         if (g == null) return original;
 

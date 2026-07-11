@@ -16,6 +16,12 @@ public class ItemStackMixin implements ItemStackDuck {
     @Unique
     ResolvableProfile detexturify$profile;
 
+    @Unique
+    int detexturify$int = -1;
+
+    @Unique
+    @Nullable Boolean detexturify$filtered;
+
     @Override
     public @Nullable Identifier detexturify$id() {
         return detexturify$id;
@@ -34,5 +40,25 @@ public class ItemStackMixin implements ItemStackDuck {
     @Override
     public void detexturify$profile(@Nullable ResolvableProfile profile) {
         detexturify$profile = profile;
+    }
+
+    @Override
+    public int detexturify$special() {
+        return detexturify$int;
+    }
+
+    @Override
+    public void detexturify$special(int i) {
+        detexturify$int = i;
+    }
+
+    @Override
+    public @Nullable Boolean detexturify$filtered() {
+        return detexturify$filtered;
+    }
+
+    @Override
+    public void detexturify$filtered(@Nullable Boolean filtered) {
+        detexturify$filtered = filtered;
     }
 }
