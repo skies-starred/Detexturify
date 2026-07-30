@@ -149,7 +149,7 @@ object Detexturify : ClientModInitializer, ICommand {
             }
         }
 
-        "https://athen.aerii.xyz/items".request {
+        "https://data.starred.foo/items.json".request {
             onSuccess<JsonObject> { json ->
                 MAP = json.entrySet().associate { (k, v) ->
                     val a = v.asJsonObject
