@@ -10,17 +10,17 @@ import foo.starred.detexturify.data.SkyBlockItem
 import foo.starred.detexturify.pack.HypixelPackCache
 import foo.starred.detexturify.updater.ModUpdater
 import foo.starred.detexturify.utils.NetworkUtils.request
+import foo.starred.snowbird.api.client
+import foo.starred.snowbird.api.held
+import foo.starred.snowbird.api.lie
+import foo.starred.snowbird.api.nextTick
+import foo.starred.snowbird.handlers.data.AbstractScribble
+import foo.starred.snowbird.handlers.parser.parse
+import foo.starred.snowbird.kommand.ICommand
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.core.component.DataComponents
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import xyz.aerii.library.api.client
-import xyz.aerii.library.api.held
-import xyz.aerii.library.api.lie
-import xyz.aerii.library.api.nextTick
-import xyz.aerii.library.handlers.data.AbstractScribble
-import xyz.aerii.library.handlers.parser.parse
-import xyz.aerii.library.kommand.ICommand
 import kotlin.jvm.optionals.getOrNull
 
 object Detexturify : ClientModInitializer, ICommand {

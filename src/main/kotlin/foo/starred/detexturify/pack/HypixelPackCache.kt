@@ -5,6 +5,9 @@ import foo.starred.detexturify.Detexturify
 import foo.starred.detexturify.config.categories.MainCategory
 import foo.starred.detexturify.utils.NetworkUtils.download
 import foo.starred.detexturify.utils.NetworkUtils.request
+import foo.starred.snowbird.api.client
+import foo.starred.snowbird.api.mainThread
+import foo.starred.snowbird.handlers.data.AbstractScribble
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.SharedConstants
 import net.minecraft.client.gui.components.toasts.SystemToast
@@ -15,9 +18,6 @@ import net.minecraft.server.packs.PackSelectionConfig
 import net.minecraft.server.packs.PackType
 import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.PackSource
-import xyz.aerii.library.api.client
-import xyz.aerii.library.api.mainThread
-import xyz.aerii.library.handlers.data.AbstractScribble
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
@@ -74,6 +74,7 @@ object HypixelPackCache {
 
         dir.mkdirs()
         mainThread {
+            //~ if >= 26.2 'client.toastManager' -> 'client.gui.toastManager()'
             SystemToast.add(client.toastManager, SystemToast.SystemToastId.PERIODIC_NOTIFICATION, Component.literal("Caching Hypixel pack"), Component.literal("This is a one-time download. Please wait a moment."))
         }
 

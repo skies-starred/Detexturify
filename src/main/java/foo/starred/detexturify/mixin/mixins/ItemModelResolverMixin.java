@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Set;
 
-import static xyz.aerii.library.api.PlayerKt.getPlayer;
+import static foo.starred.snowbird.api.PlayerKt.getPlayer;
 
 @Mixin(ItemModelResolver.class)
 public class ItemModelResolverMixin {

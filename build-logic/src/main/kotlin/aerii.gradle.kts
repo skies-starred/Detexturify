@@ -63,6 +63,9 @@ repositories {
     strictMaven("https://maven.parchmentmc.org/", "org.parchmentmc")
     strictMaven("https://jitpack.io", "com.github.skies-starred")
     strictMaven("https://repo.nea.moe/releases", "moe.nea")
+
+    maven("https://maven.starred.foo/releases")
+    maven("https://maven.starred.foo/snapshots")
 }
 
 dependencies {
@@ -76,7 +79,7 @@ dependencies {
 
     shadow("rc".versioned)
     shadow("rck".versioned)
-    shadow("library".versioned)
+    shadow("snowbird".versioned)
     shadow("autoupdate".global)
 
     if (new) return@dependencies

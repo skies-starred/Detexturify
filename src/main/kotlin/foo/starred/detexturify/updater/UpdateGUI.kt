@@ -6,11 +6,11 @@ import foo.starred.detexturify.utils.Catppuccin.Mocha
 import foo.starred.detexturify.utils.RenderUtils.drawOutline
 import foo.starred.detexturify.utils.RenderUtils.drawRectangle
 import foo.starred.detexturify.utils.RenderUtils.text
+import foo.starred.snowbird.api.client
+import foo.starred.snowbird.api.lie
+import foo.starred.snowbird.handlers.minecraft.AbstractScreen
+import foo.starred.snowbird.handlers.parser.parse
 import net.minecraft.client.gui.GuiGraphics
-import xyz.aerii.library.api.client
-import xyz.aerii.library.api.lie
-import xyz.aerii.library.handlers.minecraft.AbstractScreen
-import xyz.aerii.library.handlers.parser.parse
 
 class UpdateGUI(
     private val currentVersion: String,
@@ -18,7 +18,7 @@ class UpdateGUI(
     private val onUpdate: () -> Unit,
     private val onSkip: () -> Unit,
     private val onRemind: () -> Unit
-) : AbstractScreen("Update GUI [JEC]") {
+) : AbstractScreen("Update GUI [Detexturify]") {
     private var booling = false
 
     override fun isPauseScreen(): Boolean {

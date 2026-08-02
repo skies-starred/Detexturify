@@ -1,5 +1,5 @@
 package foo.starred.detexturify.handlers
 
-import xyz.aerii.library.handlers.time.AbstractChronos
+import foo.starred.snowbird.handlers.time.AbstractChronos
 
 object Chronos : AbstractChronos()

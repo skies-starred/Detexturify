@@ -1,8 +1,8 @@
 package foo.starred.detexturify.utils
 
 //~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor' {
+import foo.starred.snowbird.api.client
 import net.minecraft.client.gui.GuiGraphics
-import xyz.aerii.library.api.client
 
 object RenderUtils {
     @JvmStatic

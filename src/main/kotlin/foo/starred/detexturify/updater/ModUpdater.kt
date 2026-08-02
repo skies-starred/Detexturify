@@ -3,17 +3,17 @@ package foo.starred.detexturify.updater
 import com.google.gson.JsonElement
 import foo.starred.detexturify.Detexturify
 import foo.starred.detexturify.handlers.Chronos
+import foo.starred.snowbird.api.client
+import foo.starred.snowbird.api.lie
+import foo.starred.snowbird.handlers.parser.parse
+import foo.starred.snowbird.handlers.time.Task
+import foo.starred.snowbird.kommand.ICommand
 import moe.nea.libautoupdate.CurrentVersion
 import moe.nea.libautoupdate.PotentialUpdate
 import moe.nea.libautoupdate.UpdateContext
 import moe.nea.libautoupdate.UpdateTarget
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.minecraft.SharedConstants
-import xyz.aerii.library.api.client
-import xyz.aerii.library.api.lie
-import xyz.aerii.library.handlers.parser.parse
-import xyz.aerii.library.handlers.time.Task
-import xyz.aerii.library.kommand.ICommand
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration.Companion.seconds
 

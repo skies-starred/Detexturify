@@ -4,7 +4,7 @@ import com.teamresourceful.resourcefulconfig.api.loader.Configurator
 import com.teamresourceful.resourcefulconfigkt.api.ConfigKt
 import foo.starred.detexturify.Detexturify
 import foo.starred.detexturify.config.categories.MainCategory
-import xyz.aerii.library.utils.open
+import foo.starred.snowbird.utils.open
 
 object Config : ConfigKt("detexturify/config") {
     override val name = Literal(Detexturify.modName)

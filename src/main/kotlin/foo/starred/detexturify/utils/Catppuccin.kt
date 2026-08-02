@@ -2,8 +2,8 @@
 
 package foo.starred.detexturify.utils
 
-import xyz.aerii.library.utils.rgba
-import xyz.aerii.library.utils.withAlpha
+import foo.starred.snowbird.utils.rgba
+import foo.starred.snowbird.utils.withAlpha
 
 // Everything is from https://catppuccin.com/palette/, love them.
 object Catppuccin {

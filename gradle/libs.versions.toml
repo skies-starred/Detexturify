@@ -21,6 +21,10 @@ rck-1-21 = "3.5.15"
 rck-26-1 = "4.0.0-beta.1"
 rck-26-2 = "4.0.0-beta.1"
 
+snowbird-1-21-11 = "011+1.21.11"
+snowbird-26-1 = "011+26.1"
+snowbird-26-2 = "011+26.2"
+
 parchment-1-21-11 = "2025.12.20"
 
 [libraries]
@@ -45,6 +49,10 @@ rc-26-2 = { module = "com.teamresourceful.resourcefulconfig:resourcefulconfig-fa
 rck-1-21-11 = { module = "com.teamresourceful.resourcefulconfigkt:resourcefulconfigkt-fabric-1.21.5", version.ref = "rck-1-21" }
 rck-26-1 = { module = "com.teamresourceful.resourcefulconfigkt:resourcefulconfigkt-26.1-rc-1", version.ref = "rck-26-1" }
 rck-26-2 = { module = "com.teamresourceful.resourcefulconfigkt:resourcefulconfigkt-26.1-rc-1", version.ref = "rck-26-2" }
+
+snowbird-1-21-11 = { module = "foo.starred:snowbird", version.ref = "snowbird-1-21-11" }
+snowbird-26-1 = { module = "foo.starred:snowbird", version.ref = "snowbird-26-1" }
+snowbird-26-2 = { module = "foo.starred:snowbird", version.ref = "snowbird-26-2" }
 
 parchment-1-21-11 = { module = "org.parchmentmc.data:parchment-1.21.11", version.ref = "parchment-1-21-11" }
 
