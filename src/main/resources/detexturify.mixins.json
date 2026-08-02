@@ -3,7 +3,8 @@
   "package": "foo.starred.detexturify.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "mixins.ItemStackMixin"
+    "mixins.ItemStackMixin",
+    "mixins.PackRepositoryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

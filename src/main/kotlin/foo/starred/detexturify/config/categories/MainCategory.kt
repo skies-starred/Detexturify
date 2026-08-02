@@ -9,9 +9,9 @@ object MainCategory : CategoryKt("Main") {
         description = Literal("Whether the mod is enabled.")
     }.observe()
 
-    var preventDownload by boolean(true) {
-        name = Literal("Prevent download")
-        description = Literal("Prevents the texture pack from being downloaded.")
+    var hypixelCache by boolean(true) {
+        name = Literal("Cache hypixel pack")
+        description = Literal("Prevents Hypixel's texture pack from downloading and shows a cached copy instead, so some items don't render with a missing texture. The cache is saved across launches, so it's usually only downloaded once. §4Not recommended to turn off§r.")
     }.observe()
 
     var vanillaColor by boolean(true) {
@@ -20,8 +20,8 @@ object MainCategory : CategoryKt("Main") {
     }
 
     var vanillaTooltip by boolean(true) {
-        name = Literal("Vanilla tooltip")
-        description = Literal("Restores the vanilla tooltip. Only useful if you use \"Prevent download\".")
+        name = Literal("Minecraft tooltip")
+        description = Literal("Restores Minecraft's vanilla tooltip.")
     }.observe()
 
     var retexture by boolean(true) {

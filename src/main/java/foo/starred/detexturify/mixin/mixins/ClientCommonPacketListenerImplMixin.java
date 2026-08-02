@@ -2,6 +2,7 @@ package foo.starred.detexturify.mixin.mixins;
 
 import foo.starred.detexturify.Detexturify;
 import foo.starred.detexturify.config.categories.MainCategory;
+import foo.starred.detexturify.pack.HypixelPackCache;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
 import net.minecraft.network.protocol.common.ClientboundResourcePackPushPacket;
 import net.minecraft.network.protocol.common.ServerboundResourcePackPacket;
@@ -23,9 +24,10 @@ public class ClientCommonPacketListenerImplMixin {
             return;
         }
 
-        if (MainCategory.INSTANCE.getPreventDownload().getValue()) {
+        if (MainCategory.INSTANCE.getHypixelCache().getValue()) {
             ci.cancel();
 
+            HypixelPackCache.update(url);
             final ClientCommonPacketListenerImpl self = detexturify$self();
             self.send(new ServerboundResourcePackPacket(packet.id(), ServerboundResourcePackPacket.Action.ACCEPTED));
             self.send(new ServerboundResourcePackPacket(packet.id(), ServerboundResourcePackPacket.Action.SUCCESSFULLY_LOADED));
