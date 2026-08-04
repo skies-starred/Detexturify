@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Logger
 import kotlin.jvm.optionals.getOrNull
 
 object Detexturify : ClientModInitializer, ICommand {
-    const val modVersion: String = /*$ mod_version*/ "0.0.6"
+    const val modVersion: String = /*$ mod_version*/ "0.0.7"
     const val modId: String = /*$ mod_id*/ "detexturify"
     const val modName: String = /*$ mod_name*/ "Detexturify"
     const val discordUrl: String = "https://discord.gg/starred"
