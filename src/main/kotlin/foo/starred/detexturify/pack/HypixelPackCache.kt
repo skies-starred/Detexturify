@@ -7,7 +7,7 @@ import foo.starred.detexturify.utils.NetworkUtils.download
 import foo.starred.detexturify.utils.NetworkUtils.request
 import foo.starred.snowbird.api.client
 import foo.starred.snowbird.api.mainThread
-import foo.starred.snowbird.handlers.data.AbstractScribble
+import foo.starred.snowbird.api.storage.AbstractJsonStore
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.SharedConstants
 import net.minecraft.client.gui.components.toasts.SystemToast
@@ -25,8 +25,8 @@ import java.security.MessageDigest
 import java.util.Optional
 
 object HypixelPackCache {
-    private val SCRIBBLE: AbstractScribble = AbstractScribble(Detexturify.modName, "detexturify/hypixel-pack")
-    private val URL: AbstractScribble.Value<String> = SCRIBBLE.string("url")
+    private val SCRIBBLE: AbstractJsonStore = AbstractJsonStore(Detexturify.modName, "detexturify/hypixel-pack")
+    private val URL: AbstractJsonStore.Value<String> = SCRIBBLE.string("url")
 
     private val dir: File = FabricLoader.getInstance().configDir.resolve(Detexturify.modId).resolve("pack-cache").toFile()
 
@@ -48,20 +48,20 @@ object HypixelPackCache {
 
         if (MainCategory.hypixelCache.value && pack == null) {
             "https://data.starred.foo/hypixel/pack.json".request {
-                onSuccess<String> { string ->
+                success<String> { string ->
                     val version = SharedConstants.getCurrentVersion().name()
                     val key = if (version.startsWith("26.") && version.count { it == '.' } == 2) version.substringBeforeLast('.') else version
                     val url = runCatching { JsonParser.parseString(string).asJsonObject[key]?.asString }.getOrNull()
 
                     if (url.isNullOrBlank()) {
                         Detexturify.LOGGER.error("No Hypixel pack URL found for key '$key'")
-                        return@onSuccess
+                        return@success
                     }
 
                     update(url)
                 }
 
-                onError {
+                error {
                     Detexturify.LOGGER.error("Failed to fetch the Hypixel pack metadata!", it)
                 }
             }
@@ -80,7 +80,7 @@ object HypixelPackCache {
 
         val temp = File(dir, "pack.tmp")
         url.download(temp) {
-            onComplete {
+            success {
                 val target = url.cached()
                 val previous = pack
 

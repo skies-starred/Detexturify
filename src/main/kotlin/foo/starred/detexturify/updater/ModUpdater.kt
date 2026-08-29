@@ -2,12 +2,12 @@ package foo.starred.detexturify.updater
 
 import com.google.gson.JsonElement
 import foo.starred.detexturify.Detexturify
-import foo.starred.detexturify.handlers.Chronos
+import foo.starred.detexturify.handlers.Scheduler
 import foo.starred.snowbird.api.client
 import foo.starred.snowbird.api.lie
-import foo.starred.snowbird.handlers.parser.parse
-import foo.starred.snowbird.handlers.time.Task
-import foo.starred.snowbird.kommand.ICommand
+import foo.starred.snowbird.api.scheduling.scheduler.data.tasks.base.SchedulerTask
+import foo.starred.snowbird.api.text.parser.impl.parse
+import foo.starred.snowbird.utils.open
 import moe.nea.libautoupdate.CurrentVersion
 import moe.nea.libautoupdate.PotentialUpdate
 import moe.nea.libautoupdate.UpdateContext
@@ -17,10 +17,10 @@ import net.minecraft.SharedConstants
 import java.util.concurrent.CompletableFuture
 import kotlin.time.Duration.Companion.seconds
 
-object ModUpdater : ICommand {
+object ModUpdater {
     private var skippedVersion: String by Detexturify.SCRIBBLE.string("version")
     private var bool: Boolean = false
-    private var task: Task? = null
+    private var task: SchedulerTask? = null
 
     private val context = UpdateContext(
         ModrinthUpdateSource("agQYgu5m", SharedConstants.getCurrentVersion().name()),
@@ -32,7 +32,7 @@ object ModUpdater : ICommand {
     init {
         context.cleanup()
 
-        command(Detexturify.modId) {
+        Detexturify.command(Detexturify.modId) {
             "update" {
                 installUpdate()
             }
@@ -43,7 +43,7 @@ object ModUpdater : ICommand {
 
             fun fn() {
                 task?.cancel()
-                task = Chronos.schedule(3.seconds) {
+                task = Scheduler.schedule(3.seconds) {
                     //~ if >= 26.2 'client.screen' -> 'client.gui.screen()'
                     if (client.screen != null) return@schedule fn()
 

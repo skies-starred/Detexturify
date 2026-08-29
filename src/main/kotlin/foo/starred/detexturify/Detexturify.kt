@@ -10,20 +10,25 @@ import foo.starred.detexturify.data.SkyBlockItem
 import foo.starred.detexturify.pack.HypixelPackCache
 import foo.starred.detexturify.updater.ModUpdater
 import foo.starred.detexturify.utils.NetworkUtils.request
+import foo.starred.kommand.IKommand
+import foo.starred.kommand.scopes.KommandCommandScope
 import foo.starred.snowbird.api.client
 import foo.starred.snowbird.api.held
 import foo.starred.snowbird.api.lie
 import foo.starred.snowbird.api.nextTick
-import foo.starred.snowbird.handlers.data.AbstractScribble
-import foo.starred.snowbird.handlers.parser.parse
-import foo.starred.snowbird.kommand.ICommand
+import foo.starred.snowbird.api.storage.AbstractJsonStore
+import foo.starred.snowbird.api.text.parser.impl.parse
 import net.fabricmc.api.ClientModInitializer
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.core.component.DataComponents
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import kotlin.jvm.optionals.getOrNull
 
-object Detexturify : ClientModInitializer, ICommand {
+object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
+    override val loader: KommandCommandScope<FabricClientCommandSource> = KommandCommandScope()
+
     const val modVersion: String = /*$ mod_version*/ "0.0.7"
     const val modId: String = /*$ mod_id*/ "detexturify"
     const val modName: String = /*$ mod_name*/ "Detexturify"
@@ -33,13 +38,13 @@ object Detexturify : ClientModInitializer, ICommand {
     val LOGGER: Logger = LogManager.getLogger(Detexturify::class.java)
 
     @JvmField
-    val SCRIBBLE: AbstractScribble = AbstractScribble(modName, "detexturify/whitelist")
+    val SCRIBBLE: AbstractJsonStore = AbstractJsonStore(modName, "detexturify/whitelist")
 
     @JvmField
-    val WHITELIST: AbstractScribble.Value<MutableSet<String>> = SCRIBBLE.mutableSet("whitelist", Codec.STRING)
+    val WHITELIST: AbstractJsonStore.Value<MutableSet<String>> = SCRIBBLE.mutableSet("whitelist", Codec.STRING)
 
     @JvmField
-    val BLACKLIST: AbstractScribble.Value<MutableSet<String>> = SCRIBBLE.mutableSet("blacklist", Codec.STRING)
+    val BLACKLIST: AbstractJsonStore.Value<MutableSet<String>> = SCRIBBLE.mutableSet("blacklist", Codec.STRING)
 
     @JvmField
     var MAP: Map<String, SkyBlockItem> = mapOf()
@@ -51,6 +56,10 @@ object Detexturify : ClientModInitializer, ICommand {
         Config.toString()
         ModUpdater.toString()
         HypixelPackCache.toString()
+
+        ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ ->
+            loader.register(dispatcher)
+        }
 
         command(modId) {
             executes {
@@ -152,7 +161,7 @@ object Detexturify : ClientModInitializer, ICommand {
         }
 
         "https://data.starred.foo/items.json".request {
-            onSuccess<JsonObject> { json ->
+            success<JsonObject> { json ->
                 MAP = json.entrySet().associate { (k, v) ->
                     val a = v.asJsonObject
                     k to SkyBlockItem(a.get("texture")?.asString, a.get("model").asString)

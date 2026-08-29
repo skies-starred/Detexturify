@@ -1,6 +1,5 @@
 package foo.starred.detexturify.updater
 
-//~ if >= 26.1 'GuiGraphics' -> 'GuiGraphicsExtractor' {
 import foo.starred.detexturify.Detexturify
 import foo.starred.detexturify.utils.Catppuccin.Mocha
 import foo.starred.detexturify.utils.RenderUtils.drawOutline
@@ -8,9 +7,11 @@ import foo.starred.detexturify.utils.RenderUtils.drawRectangle
 import foo.starred.detexturify.utils.RenderUtils.text
 import foo.starred.snowbird.api.client
 import foo.starred.snowbird.api.lie
-import foo.starred.snowbird.handlers.minecraft.AbstractScreen
-import foo.starred.snowbird.handlers.parser.parse
-import net.minecraft.client.gui.GuiGraphics
+import foo.starred.snowbird.api.text.parser.impl.parse
+import foo.starred.snowbird.utils.literal
+import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.MouseButtonEvent
 
 class UpdateGUI(
     private val currentVersion: String,
@@ -18,19 +19,19 @@ class UpdateGUI(
     private val onUpdate: () -> Unit,
     private val onSkip: () -> Unit,
     private val onRemind: () -> Unit
-) : AbstractScreen("Update GUI [Detexturify]") {
+) : Screen("Update GUI [Detexturify]".literal()) {
     private var booling = false
 
     override fun isPauseScreen(): Boolean {
         return false
     }
 
-    override fun onScramRender(graphics: GuiGraphics, mouseX: Int, mouseY: Int, delta: Float) {
+    override fun extractRenderState(graphics: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
         graphics.drawRectangle(0, 0, width, height, Mocha.Crust.withAlpha(0.6f))
         graphics.drawPanel(mouseX, mouseY, (width - 360) / 2, (height - 175) / 2)
     }
 
-    private fun GuiGraphics.drawPanel(mouseX: Int, mouseY: Int, px: Int, py: Int) {
+    private fun GuiGraphicsExtractor.drawPanel(mouseX: Int, mouseY: Int, px: Int, py: Int) {
         drawRectangle(px, py, 360, 28, Mocha.Base.argb)
         drawRectangle(px, py + 28, 360, 175 - 28, Mocha.Mantle.argb)
         drawOutline(px, py, 360, 175, 1, Mocha.Surface0.argb)
@@ -54,22 +55,22 @@ class UpdateGUI(
         drawButton(mouseX, mouseY, px + 240, py + 175 - 34, if (booling) "Confirm?" else "Skip Version", Mocha.Red.argb)
     }
 
-    private fun GuiGraphics.drawButton( mouseX: Int, mouseY: Int, x: Int, y: Int, label: String, color: Int) {
+    private fun GuiGraphicsExtractor.drawButton( mouseX: Int, mouseY: Int, x: Int, y: Int, label: String, color: Int) {
         val b = mouseX in x until x + 104 && mouseY in y until y + 22
         drawRectangle(x, y, 104, 22, if (b) color else Mocha.Surface1.argb)
         drawOutline(x, y, 104, 22, 1, color)
         text(label, x + (104 - client.font.width(label)) / 2, y + (22 - client.font.lineHeight) / 2 + 1, false, if (b) Mocha.Base.argb else color)
     }
 
-    override fun onScramMouseClick(mouseX: Int, mouseY: Int, button: Int): Boolean {
-        if (button != 0) return super.onScramMouseClick(mouseX, mouseY, button)
+    override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
+        if (event.button() != 0) return super.mouseClicked(event, doubleClick)
 
         val x = (width - 360) / 2 + 16
         val y = (height - 175) / 2 + 141
 
         fun fn(i: Int): Boolean {
             val xo = x + i * (104 + 8)
-            return mouseX in xo until xo + 104 && mouseY in y until y + 22
+            return event.x().toInt() in xo until xo + 104 && event.y().toInt() in y until y + 22
         }
 
         when {
@@ -100,10 +101,9 @@ class UpdateGUI(
                 booling = true
             }
 
-            else -> return super.onScramMouseClick(mouseX, mouseY, button)
+            else -> return super.mouseClicked(event, doubleClick)
         }
 
         return true
     }
 }
-//~ }
