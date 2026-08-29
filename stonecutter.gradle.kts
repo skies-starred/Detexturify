@@ -1,10 +1,9 @@
 plugins {
     id("dev.kikugie.stonecutter")
     alias(libs.plugins.loom) apply false
-    alias(libs.plugins.loom.obf) apply false
 }
 
-stonecutter active "1.21.11"
+stonecutter active "26.1"
 
 stonecutter parameters {
     swaps["mod_version"] = "\"" + property("mod.version") + "\""

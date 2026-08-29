@@ -81,12 +81,6 @@ dependencies {
     shadow("rck".versioned)
     shadow("snowbird".versioned)
     shadow("autoupdate".global)
-
-    if (new) return@dependencies
-    "mappings"(loom.layered {
-        officialMojangMappings()
-        parchment("parchment".versioned)
-    })
 }
 
 loom.apply {

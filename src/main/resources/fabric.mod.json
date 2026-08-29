@@ -23,9 +23,9 @@
     "${id}.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.18",
+    "fabricloader": ">=0.19",
     "fabric-api": "*",
-    "fabric-language-kotlin": ">=${kotlin}",
+    "fabric-language-kotlin": "*",
     "minecraft": "${minecraft}"
   },
   "accessWidener": "${accessWidener}"
