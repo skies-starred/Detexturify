@@ -3,7 +3,7 @@ package foo.starred.detexturify.config
 import com.teamresourceful.resourcefulconfigkt.api.ConfigDelegateProvider
 import com.teamresourceful.resourcefulconfigkt.api.RConfigKtEntry
 import com.teamresourceful.resourcefulconfigkt.api.builders.EntriesBuilder
-import foo.starred.snowbird.handlers.Observable
+import foo.starred.snowbird.api.data.Observable
 import kotlin.reflect.KProperty
 
 fun <T> ConfigDelegateProvider<RConfigKtEntry<T>>.observe(): StateEntry<T> {
