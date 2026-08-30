@@ -29,7 +29,7 @@ import kotlin.jvm.optionals.getOrNull
 object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
     override val loader: KommandCommandScope<FabricClientCommandSource> = KommandCommandScope()
 
-    const val modVersion: String = /*$ mod_version*/ "0.0.8"
+    const val modVersion: String = /*$ mod_version*/ "0.0.9"
     const val modId: String = /*$ mod_id*/ "detexturify"
     const val modName: String = /*$ mod_name*/ "Detexturify"
     const val discordUrl: String = "https://discord.gg/starred"
