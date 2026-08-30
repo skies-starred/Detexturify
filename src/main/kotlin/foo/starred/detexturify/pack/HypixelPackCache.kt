@@ -127,7 +127,7 @@ object HypixelPackCache {
         if (!exists()) return null
 
         return try {
-            Pack.readMetaAndCreate(PackLocationInfo("detexturify/fallback/hypixel", Component.literal("Detexturify: Hypixel SkyBlock (cached)"), PackSource.SERVER, Optional.empty()), FilePackResources.FileResourcesSupplier(this), PackType.CLIENT_RESOURCES, PackSelectionConfig(true, Pack.Position.TOP, true))
+            Pack.readMetaAndCreate(PackLocationInfo("detexturify/fallback/hypixel", Component.literal("Detexturify: Hypixel SkyBlock (cached)"), PackSource.BUILT_IN, Optional.empty()), FilePackResources.FileResourcesSupplier(this), PackType.CLIENT_RESOURCES, PackSelectionConfig(true, Pack.Position.TOP, true))
         } catch (t: Throwable) {
             Detexturify.LOGGER.error("Failed to read Hypixel SkyBlock pack metadata at $this", t)
             null
