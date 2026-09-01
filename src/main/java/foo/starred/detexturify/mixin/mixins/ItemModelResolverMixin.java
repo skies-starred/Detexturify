@@ -105,10 +105,17 @@ public class ItemModelResolverMixin {
             return original;
         }
 
+        final String i = Detexturify.REPLACEMENTS.getValue().get(g);
+        if (i != null) {
+            final Identifier id = Identifier.withDefaultNamespace(i);
+            b.detexturify$id(id);
+            return id;
+        }
+
         if (c0 == 0 || detexturify$katanas.contains(g)) {
             b.detexturify$special(0);
-            final LocalPlayer i = getPlayer();
-            return (i != null && i.getCooldowns().isOnCooldown(stack)) ? detexturify$sword$1 : detexturify$sword$3;
+            final LocalPlayer j = getPlayer();
+            return (j != null && j.getCooldowns().isOnCooldown(stack)) ? detexturify$sword$1 : detexturify$sword$3;
         }
 
         if (e != -1 && c0 != 1) b.detexturify$special(1);
@@ -117,13 +124,13 @@ public class ItemModelResolverMixin {
         if (e == 2) return detexturify$sword$2;
         if (e == 3) return detexturify$sword$3;
 
-        final SkyBlockItem i = Detexturify.MAP.get(g);
-        if (i == null) return original;
+        final SkyBlockItem j = Detexturify.MAP.get(g);
+        if (j == null) return original;
 
-        final Identifier j = i.getId();
-        b.detexturify$id(j);
+        final Identifier k = j.getId();
+        b.detexturify$id(k);
 
-        return j;
+        return k;
     }
 
     @Unique

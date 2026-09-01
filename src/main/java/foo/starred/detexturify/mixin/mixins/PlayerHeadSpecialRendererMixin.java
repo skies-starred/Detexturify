@@ -49,6 +49,11 @@ public class PlayerHeadSpecialRendererMixin {
         if (e == null) return original;
 
         final String f = e.replace(':', '-');
+        if (Detexturify.REPLACEMENTS.getValue().containsKey(f)) {
+            b.detexturify$profile((ResolvableProfile) original);
+            return original;
+        }
+
         final SkyBlockItem g = Detexturify.MAP.get(f);
         if (g == null) return original;
 
