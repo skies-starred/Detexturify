@@ -12,13 +12,18 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.SharedConstants
 import net.minecraft.client.gui.components.toasts.SystemToast
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.Identifier
 import net.minecraft.server.packs.FilePackResources
 import net.minecraft.server.packs.PackLocationInfo
+import net.minecraft.server.packs.PackResources
 import net.minecraft.server.packs.PackSelectionConfig
 import net.minecraft.server.packs.PackType
+import net.minecraft.server.packs.repository.KnownPack
 import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.PackSource
+import net.minecraft.server.packs.resources.IoSupplier
 import java.io.File
+import java.io.InputStream
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.security.MessageDigest
@@ -126,8 +131,18 @@ object HypixelPackCache {
     private fun File.pack(): Pack? {
         if (!exists()) return null
 
+        val original = FilePackResources.FileResourcesSupplier(this)
+        val resources = object : Pack.ResourcesSupplier {
+            override fun openPrimary(info: PackLocationInfo): PackResources = original.openPrimary(info).wrap()
+            override fun openFull(info: PackLocationInfo, metadata: Pack.Metadata): PackResources = original.openFull(info, metadata).wrap()
+        }
+
         return try {
-            Pack.readMetaAndCreate(PackLocationInfo("detexturify/fallback/hypixel", Component.literal("Detexturify: Hypixel SkyBlock (cached)"), PackSource.BUILT_IN, Optional.empty()), FilePackResources.FileResourcesSupplier(this), PackType.CLIENT_RESOURCES, PackSelectionConfig(true, Pack.Position.BOTTOM, false))
+            val location = PackLocationInfo("detexturify/fallback/hypixel", Component.literal("Detexturify: Hypixel SkyBlock (cached)"), PackSource.BUILT_IN, Optional.empty())
+            val original = Pack.readPackMetadata(location, resources, SharedConstants.getCurrentVersion().packVersion(PackType.CLIENT_RESOURCES), PackType.CLIENT_RESOURCES) ?: return null
+            val metadata = Pack.Metadata(Component.literal("Hypixel SkyBlock textures cached by Detexturify"), original.compatibility(), original.requestedFeatures(), original.overlays())
+
+            Pack(location, resources, metadata, PackSelectionConfig(true, Pack.Position.BOTTOM, false))
         } catch (t: Throwable) {
             Detexturify.LOGGER.error("Failed to read Hypixel SkyBlock pack metadata at $this", t)
             null
@@ -137,5 +152,31 @@ object HypixelPackCache {
     private fun String.cached(): File {
         val hash = MessageDigest.getInstance("SHA-256").digest(toByteArray()).joinToString("") { "%02x".format(it) }.take(16)
         return File(dir, "pack-$hash.zip")
+    }
+
+    private fun PackResources.wrap(): PackResources {
+        val original = this
+
+        return object : PackResources by original {
+            override fun getResource(type: PackType, location: Identifier): IoSupplier<InputStream>? {
+                if (location.path.startsWith("textures/gui/title/background/panorama")) return null
+                return original.getResource(type, location)
+            }
+
+            override fun listResources(type: PackType, namespace: String, path: String, output: PackResources.ResourceOutput) {
+                original.listResources(type, namespace, path) { id: Identifier, stream: IoSupplier<InputStream> ->
+                    if (id.path.startsWith("textures/gui/title/background/panorama")) return@listResources
+                    output.accept(id, stream)
+                }
+            }
+
+            override fun packId(): String {
+                return original.packId()
+            }
+
+            override fun knownPackInfo(): Optional<KnownPack> {
+                return original.knownPackInfo()
+            }
+        }
     }
 }
