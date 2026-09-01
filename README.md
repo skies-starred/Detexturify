@@ -3,11 +3,15 @@
 Detexturify removes the custom texture pack that's forced by Hypixel SkyBlock and replaces the items with their original item models with **0 performance impact**!
 
 ## Features
+- Cached hypixel skyblock pack
+- Custom item replacements
 - Prevent downloading the custom texture pack
 - Restore items
 - Re-texture items
     - Blacklist to apply custom textures to all items except those listed, or Whitelist to apply custom textures only to the listed items
     - Doesn't break with skins like the other mods do!
+    - Supports state-based items!
+- Supports all textures!
 - Vanilla tooltip without disabling the whole texture pack
 - Vanilla colors without disabling the whole texture pack
 
@@ -16,6 +20,7 @@ Detexturify removes the custom texture pack that's forced by Hypixel SkyBlock an
 - /detexturify config
 - /detexturify whitelist
 - /detexturify blacklist
+- /detexturify replace
 
 ## FAQ
 
