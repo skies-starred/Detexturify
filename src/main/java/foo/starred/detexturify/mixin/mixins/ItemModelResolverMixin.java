@@ -3,7 +3,7 @@ package foo.starred.detexturify.mixin.mixins;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import foo.starred.detexturify.Detexturify;
-import foo.starred.detexturify.config.categories.MainCategory;
+import foo.starred.detexturify.config.DetexturifyConfig;
 import foo.starred.detexturify.data.SkyBlockItem;
 import foo.starred.detexturify.ducks.ItemStackDuck;
 import kotlin.Unit;
@@ -43,24 +43,24 @@ public class ItemModelResolverMixin {
     private final static Set<String> detexturify$katanas = Set.of("VOIDEDGE_KATANA", "VORPAL_KATANA", "ATOMSPLIT_KATANA");
 
     @Unique
-    private static boolean detexturify$bool = MainCategory.INSTANCE.getEnabled().getValue() && MainCategory.INSTANCE.getRetexture().getValue();
+    private static boolean detexturify$bool = DetexturifyConfig.INSTANCE.getEnabled().getValue() && DetexturifyConfig.INSTANCE.getRetexture().getValue();
 
     @Unique
-    private static boolean detexturify$component = MainCategory.INSTANCE.getRetextureType().getValue() == MainCategory.RetextureType.COMPONENT;
+    private static boolean detexturify$component = DetexturifyConfig.INSTANCE.getRetextureType().getValue() == DetexturifyConfig.RetextureType.COMPONENT;
 
     static {
-        MainCategory.INSTANCE.getEnabled().onChange(bool -> {
-            detexturify$bool = bool && MainCategory.INSTANCE.getRetexture().getValue();
+        DetexturifyConfig.INSTANCE.getEnabled().onChange(bool -> {
+            detexturify$bool = bool && DetexturifyConfig.INSTANCE.getRetexture().getValue();
             return Unit.INSTANCE;
         });
 
-        MainCategory.INSTANCE.getRetexture().onChange(bool -> {
-            detexturify$bool = bool && MainCategory.INSTANCE.getEnabled().getValue();
+        DetexturifyConfig.INSTANCE.getRetexture().onChange(bool -> {
+            detexturify$bool = bool && DetexturifyConfig.INSTANCE.getEnabled().getValue();
             return Unit.INSTANCE;
         });
 
-        MainCategory.INSTANCE.getRetextureType().onChange(type -> {
-            detexturify$component = type == MainCategory.RetextureType.COMPONENT;
+        DetexturifyConfig.INSTANCE.getRetextureType().onChange(type -> {
+            detexturify$component = type == DetexturifyConfig.RetextureType.COMPONENT;
             return Unit.INSTANCE;
         });
     }
@@ -138,7 +138,7 @@ public class ItemModelResolverMixin {
         final Boolean a = b.detexturify$filtered();
         if (a != null) return a;
 
-        final boolean c = MainCategory.INSTANCE.getFilterType() == MainCategory.FilterType.WHITELIST ? !Detexturify.WHITELIST.getValue().contains(g) : Detexturify.BLACKLIST.getValue().contains(g);
+        final boolean c = DetexturifyConfig.INSTANCE.getFilterType() == DetexturifyConfig.FilterType.WHITELIST ? !Detexturify.WHITELIST.getValue().contains(g) : Detexturify.BLACKLIST.getValue().contains(g);
         b.detexturify$filtered(c);
         return c;
     }

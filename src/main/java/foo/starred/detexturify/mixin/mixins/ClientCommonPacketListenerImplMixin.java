@@ -1,7 +1,7 @@
 package foo.starred.detexturify.mixin.mixins;
 
 import foo.starred.detexturify.Detexturify;
-import foo.starred.detexturify.config.categories.MainCategory;
+import foo.starred.detexturify.config.DetexturifyConfig;
 import foo.starred.detexturify.pack.HypixelPackCache;
 import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
 import net.minecraft.network.protocol.common.ClientboundResourcePackPushPacket;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientCommonPacketListenerImplMixin {
     @Inject(method = "handleResourcePackPush", at = @At("HEAD"), cancellable = true)
     private void detexturify$handleResourcePackPush(ClientboundResourcePackPushPacket packet, CallbackInfo ci) {
-        if (!MainCategory.INSTANCE.getEnabled().getValue()) return;
+        if (!DetexturifyConfig.INSTANCE.getEnabled().getValue()) return;
 
         final String url = packet.url();
         if (!url.contains("hypixel.net") || !url.contains("SkyBlock")) {
@@ -24,7 +24,7 @@ public class ClientCommonPacketListenerImplMixin {
             return;
         }
 
-        if (MainCategory.INSTANCE.getHypixelCache().getValue()) {
+        if (DetexturifyConfig.INSTANCE.getHypixelCache().getValue()) {
             ci.cancel();
 
             HypixelPackCache.update(url);

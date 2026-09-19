@@ -5,10 +5,9 @@ package foo.starred.detexturify
 import com.google.gson.JsonObject
 import com.mojang.serialization.Codec
 import com.teamresourceful.resourcefulconfig.api.client.ResourcefulConfigScreen
-import foo.starred.detexturify.config.Config
+import foo.starred.detexturify.config.DetexturifyConfig
 import foo.starred.detexturify.data.SkyBlockItem
 import foo.starred.detexturify.pack.HypixelPackCache
-import foo.starred.detexturify.updater.ModUpdater
 import foo.starred.detexturify.utils.NetworkUtils.request
 import foo.starred.kommand.IKommand
 import foo.starred.kommand.scopes.KommandCommandScope
@@ -18,6 +17,7 @@ import foo.starred.snowbird.api.lie
 import foo.starred.snowbird.api.nextTick
 import foo.starred.snowbird.api.storage.AbstractJsonStore
 import foo.starred.snowbird.api.text.parser.impl.parse
+import foo.starred.updater.logic.source.impl.ModrinthUpdateSource
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
@@ -57,8 +57,9 @@ object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
     var texture: Boolean = false
 
     override fun onInitializeClient() {
-        Config.toString()
-        ModUpdater.toString()
+        ModrinthUpdateSource("detexturify").init(modVersion)
+
+        DetexturifyConfig.toString()
         HypixelPackCache.toString()
 
         ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ ->

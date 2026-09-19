@@ -1,6 +1,6 @@
 package foo.starred.detexturify.mixin.mixins;
 
-import foo.starred.detexturify.config.categories.MainCategory;
+import foo.starred.detexturify.config.DetexturifyConfig;
 import kotlin.Unit;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
@@ -12,16 +12,16 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(value = GuiGraphicsExtractor.class, priority = Integer.MIN_VALUE)
 public class GuiGraphicsMixin {
     @Unique
-    private static boolean detexturify$bool = MainCategory.INSTANCE.getEnabled().getValue() && MainCategory.INSTANCE.getVanillaTooltip().getValue();
+    private static boolean detexturify$bool = DetexturifyConfig.INSTANCE.getEnabled().getValue() && DetexturifyConfig.INSTANCE.getVanillaTooltip().getValue();
 
     static {
-        MainCategory.INSTANCE.getEnabled().onChange(bool -> {
-            detexturify$bool = bool && MainCategory.INSTANCE.getVanillaTooltip().getValue();
+        DetexturifyConfig.INSTANCE.getEnabled().onChange(bool -> {
+            detexturify$bool = bool && DetexturifyConfig.INSTANCE.getVanillaTooltip().getValue();
             return Unit.INSTANCE;
         });
 
-        MainCategory.INSTANCE.getVanillaTooltip().onChange(bool -> {
-            detexturify$bool = bool && MainCategory.INSTANCE.getEnabled().getValue();
+        DetexturifyConfig.INSTANCE.getVanillaTooltip().onChange(bool -> {
+            detexturify$bool = bool && DetexturifyConfig.INSTANCE.getEnabled().getValue();
             return Unit.INSTANCE;
         });
     }

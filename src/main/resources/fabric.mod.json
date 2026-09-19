@@ -28,5 +28,5 @@
     "fabric-language-kotlin": "*",
     "minecraft": "${minecraft}"
   },
-  "accessWidener": "${accessWidener}"
+  "accessWidener": "${tweaker}"
 }

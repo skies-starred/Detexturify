@@ -1,0 +1,6 @@
+[versions]
+id = "detexturify"
+name = "Detexturify"
+version = "0.1.0"
+group = "foo.starred"
+tweaker = "detexturify.accesswidener"

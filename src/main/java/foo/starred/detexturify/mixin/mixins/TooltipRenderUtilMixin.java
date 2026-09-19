@@ -1,7 +1,7 @@
 package foo.starred.detexturify.mixin.mixins;
 
 import foo.starred.detexturify.Detexturify;
-import foo.starred.detexturify.config.categories.MainCategory;
+import foo.starred.detexturify.config.DetexturifyConfig;
 import kotlin.Unit;
 import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
 import net.minecraft.resources.Identifier;
@@ -20,16 +20,16 @@ public class TooltipRenderUtilMixin {
     private static final Identifier detexturify$frame = Identifier.fromNamespaceAndPath(Detexturify.modId, "tooltip/frame");
 
     @Unique
-    private static boolean detexturify$bool = MainCategory.INSTANCE.getEnabled().getValue() && MainCategory.INSTANCE.getVanillaTooltip().getValue();
+    private static boolean detexturify$bool = DetexturifyConfig.INSTANCE.getEnabled().getValue() && DetexturifyConfig.INSTANCE.getVanillaTooltip().getValue();
 
     static {
-        MainCategory.INSTANCE.getEnabled().onChange(bool -> {
-            detexturify$bool = bool && MainCategory.INSTANCE.getVanillaTooltip().getValue();
+        DetexturifyConfig.INSTANCE.getEnabled().onChange(bool -> {
+            detexturify$bool = bool && DetexturifyConfig.INSTANCE.getVanillaTooltip().getValue();
             return Unit.INSTANCE;
         });
 
-        MainCategory.INSTANCE.getVanillaTooltip().onChange(bool -> {
-            detexturify$bool = bool && MainCategory.INSTANCE.getEnabled().getValue();
+        DetexturifyConfig.INSTANCE.getVanillaTooltip().onChange(bool -> {
+            detexturify$bool = bool && DetexturifyConfig.INSTANCE.getEnabled().getValue();
             return Unit.INSTANCE;
         });
     }

@@ -2,7 +2,7 @@ package foo.starred.detexturify.pack
 
 import com.google.gson.JsonParser
 import foo.starred.detexturify.Detexturify
-import foo.starred.detexturify.config.categories.MainCategory
+import foo.starred.detexturify.config.DetexturifyConfig
 import foo.starred.detexturify.utils.NetworkUtils.download
 import foo.starred.detexturify.utils.NetworkUtils.request
 import foo.starred.snowbird.api.client
@@ -47,11 +47,11 @@ object HypixelPackCache {
     var last: String? = if (active != null) URL.value else null
 
     init {
-        MainCategory.hypixelCache.onChange {
+        DetexturifyConfig.hypixelCache.onChange {
             if (it) enable() else disable()
         }
 
-        if (MainCategory.hypixelCache.value && pack == null) {
+        if (DetexturifyConfig.hypixelCache.value && pack == null) {
             "https://data.starred.foo/hypixel/pack.json".request {
                 success<String> { string ->
                     val version = SharedConstants.getCurrentVersion().name()
@@ -132,10 +132,17 @@ object HypixelPackCache {
         if (!exists()) return null
 
         val original = FilePackResources.FileResourcesSupplier(this)
+        //? if >= 26.3 {
+        /*val resources = object : Pack.ResourcesSupplier {
+            override fun openMetadata(location: PackLocationInfo) = original.openMetadata(location)
+            override fun openResources(location: PackLocationInfo, metadata: Pack.Metadata) = original.openResources(location, metadata).map { it.wrap() }
+        }
+        *///?} else {
         val resources = object : Pack.ResourcesSupplier {
             override fun openPrimary(info: PackLocationInfo): PackResources = original.openPrimary(info).wrap()
             override fun openFull(info: PackLocationInfo, metadata: Pack.Metadata): PackResources = original.openFull(info, metadata).wrap()
         }
+        //?}
 
         return try {
             val location = PackLocationInfo("detexturify/fallback/hypixel", Component.literal("Detexturify: Hypixel SkyBlock (cached)"), PackSource.BUILT_IN, Optional.empty())
