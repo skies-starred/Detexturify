@@ -5,7 +5,7 @@ kotlin = "2.4.10"
 devauth = "1.2.2"
 
 kommand = "2026.09.1"
-snowbird = "2026.09.1"
+snowbird = "2026.09.2"
 cascade = "2026.09.3"
 updater = "2026.09.1"
 
