@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
+import java.util.Objects;
 import java.util.Set;
 
 import static foo.starred.snowbird.api.PlayerKt.getPlayer;
@@ -128,6 +129,8 @@ public class ItemModelResolverMixin {
         if (j == null) return original;
 
         final Identifier k = j.getId();
+        if (Objects.equals(k.getPath(), "player_head") && j.getModel() == null) return original;
+
         b.detexturify$id(k);
 
         return k;
