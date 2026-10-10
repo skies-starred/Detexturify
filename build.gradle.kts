@@ -34,6 +34,7 @@ dependencies {
     shadow(lib["resourceful-config"])
     shadow(libs.resourceful.config.kotlin)
 
+    shadow(libs.kbus)
     shadow(libs.kommand)
     shadow(libs.snowbird.find())
     shadow(libs.cascade.find())
