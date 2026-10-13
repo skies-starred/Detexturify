@@ -47,29 +47,12 @@ object HypixelPackCache {
     var last: String? = if (active != null) URL.value else null
 
     init {
-        DetexturifyConfig.hypixelCache.onChange {
+        DetexturifyConfig.hypixelCache.observe {
             if (it) enable() else disable()
         }
 
-        if (DetexturifyConfig.hypixelCache.value && pack == null) {
-            "https://data.starred.foo/hypixel/pack.json".request {
-                success<String> { string ->
-                    val version = SharedConstants.getCurrentVersion().name()
-                    val key = if (version.startsWith("26.") && version.count { it == '.' } == 2) version.substringBeforeLast('.') else version
-                    val url = runCatching { JsonParser.parseString(string).asJsonObject[key]?.asString }.getOrNull()
-
-                    if (url.isNullOrBlank()) {
-                        Detexturify.LOGGER.error("No Hypixel pack URL found for key '$key'")
-                        return@success
-                    }
-
-                    update(url)
-                }
-
-                error {
-                    Detexturify.LOGGER.error("Failed to fetch the Hypixel pack metadata!", it)
-                }
-            }
+        if (pack == null) {
+            remote()
         }
     }
 
@@ -100,13 +83,38 @@ object HypixelPackCache {
                     last = url
                     URL.value = url
 
-                    if (previous != null && previous != target) previous.delete()
+                    if (previous != null && previous != target) {
+                        previous.delete()
+                    }
 
                     Detexturify.LOGGER.info("Cached and loaded the Hypixel SkyBlock pack ($url)")
                     mainThread { client.reloadResourcePacks() }
                 }.onFailure {
                     Detexturify.LOGGER.error("Failed to finalise the downloaded Hypixel SkyBlock pack", it)
                 }
+            }
+        }
+    }
+
+    fun remote() {
+        if (!DetexturifyConfig.hypixelCache.value) return
+
+        "https://data.starred.foo/hypixel/pack.json".request {
+            success<String> { string ->
+                val version = SharedConstants.getCurrentVersion().name()
+                val key = if (version.startsWith("26.") && version.count { it == '.' } == 2) version.substringBeforeLast('.') else version
+                val url = runCatching { JsonParser.parseString(string).asJsonObject[key]?.asString }.getOrNull()
+
+                if (url.isNullOrBlank()) {
+                    Detexturify.LOGGER.error("No Hypixel pack URL found for key '$key'")
+                    return@success
+                }
+
+                update(url)
+            }
+
+            error {
+                Detexturify.LOGGER.error("Failed to fetch the Hypixel pack metadata!", it)
             }
         }
     }

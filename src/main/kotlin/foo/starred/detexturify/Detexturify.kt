@@ -21,6 +21,7 @@ import foo.starred.updater.logic.source.impl.ModrinthUpdateSource
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.SharedConstants
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import org.apache.logging.log4j.LogManager
@@ -39,16 +40,19 @@ object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
     val LOGGER: Logger = LogManager.getLogger(Detexturify::class.java)
 
     @JvmField
-    val SCRIBBLE: AbstractJsonStore = AbstractJsonStore(modName, "detexturify/whitelist")
+    val JSON: AbstractJsonStore = AbstractJsonStore(modName, "detexturify/whitelist")
 
     @JvmField
-    val WHITELIST: AbstractJsonStore.Value<MutableSet<String>> = SCRIBBLE.mutableSet("whitelist", Codec.STRING)
+    val LAST_VERSION: AbstractJsonStore.Value<String> = JSON.string("last_minecraft_version")
 
     @JvmField
-    val BLACKLIST: AbstractJsonStore.Value<MutableSet<String>> = SCRIBBLE.mutableSet("blacklist", Codec.STRING)
+    val WHITELIST: AbstractJsonStore.Value<MutableSet<String>> = JSON.mutableSet("whitelist", Codec.STRING)
 
     @JvmField
-    val REPLACEMENTS: AbstractJsonStore.Value<MutableMap<String, String>> = SCRIBBLE.mutableMap("replacements", Codec.STRING, Codec.STRING)
+    val BLACKLIST: AbstractJsonStore.Value<MutableSet<String>> = JSON.mutableSet("blacklist", Codec.STRING)
+
+    @JvmField
+    val REPLACEMENTS: AbstractJsonStore.Value<MutableMap<String, String>> = JSON.mutableMap("replacements", Codec.STRING, Codec.STRING)
 
     @JvmField
     var MAP: Map<String, SkyBlockItem> = mapOf()
@@ -57,6 +61,14 @@ object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
     var texture: Boolean = false
 
     override fun onInitializeClient() {
+        val current = SharedConstants.getCurrentVersion().name()
+        if (current != LAST_VERSION.value) {
+            if (LAST_VERSION.value.isNotEmpty()) LOGGER.info("Minecraft version was changed, this should not happen! Redownloading the texture pack...")
+
+            LAST_VERSION.value = current
+            HypixelPackCache.remote()
+        }
+
         ModrinthUpdateSource("detexturify").init(modVersion)
 
         DetexturifyConfig.toString()
@@ -66,6 +78,19 @@ object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
             loader.register(dispatcher)
         }
 
+        kommand()
+
+        "https://data.starred.foo/items.json".request {
+            success<JsonObject> { json ->
+                MAP = json.entrySet().associate { (k, v) ->
+                    val a = v.asJsonObject
+                    k to SkyBlockItem(a.get("texture")?.asString, a.get("model").asString)
+                }
+            }
+        }
+    }
+
+    private fun kommand() {
         command(modId) {
             executes {
                 "<#FAB387>[Detexturify]<r> Available commands:".parse(true).lie()
@@ -219,15 +244,6 @@ object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
                     REPLACEMENTS.update { put(id, model) }
                     "<#FAB387>[Detexturify]<r> Successfully replaced '<green>$id<r>' with '<yellow>$model<r>'! You may need to change servers to view changes.".parse(true).lie()
                 }.suggests { BuiltInRegistries.ITEM.keySet().map { it.path } }
-            }
-        }
-
-        "https://data.starred.foo/items.json".request {
-            success<JsonObject> { json ->
-                MAP = json.entrySet().associate { (k, v) ->
-                    val a = v.asJsonObject
-                    k to SkyBlockItem(a.get("texture")?.asString, a.get("model").asString)
-                }
             }
         }
     }
