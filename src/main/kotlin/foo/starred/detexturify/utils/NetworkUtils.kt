@@ -1,6 +1,6 @@
 package foo.starred.detexturify.utils
 
 import foo.starred.detexturify.Detexturify
-import foo.starred.snowbird.api.network.WebUtils
+import foo.starred.kontext.api.network.WebUtils
 
 object NetworkUtils : WebUtils(Detexturify.modName, Detexturify.LOGGER)

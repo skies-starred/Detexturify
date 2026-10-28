@@ -2,17 +2,8 @@
   "required": false,
   "package": "foo.starred.detexturify.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "mixins.ClientCommonPacketListenerImplMixin",
-    "mixins.GuiGraphicsMixin",
-    "mixins.ItemModelResolverMixin",
-    "mixins.ItemStackMixin",
-    "mixins.MinecraftMixin",
-    "mixins.PackRepositoryMixin",
-    "mixins.PlayerHeadSpecialRendererMixin",
-    "mixins.ShaderManagerMixin",
-    "mixins.TooltipRenderUtilMixin"
-  ],
+  "plugin": "foo.starred.detexturify.mixin.loader.DetexturifyMixinLoaderPlugin",
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
   }

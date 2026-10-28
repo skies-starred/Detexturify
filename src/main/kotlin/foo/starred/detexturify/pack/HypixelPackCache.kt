@@ -5,9 +5,9 @@ import foo.starred.detexturify.Detexturify
 import foo.starred.detexturify.config.DetexturifyConfig
 import foo.starred.detexturify.utils.NetworkUtils.download
 import foo.starred.detexturify.utils.NetworkUtils.request
-import foo.starred.snowbird.api.client
-import foo.starred.snowbird.api.mainThread
-import foo.starred.snowbird.api.storage.AbstractJsonStore
+import foo.starred.kontext.abstraction.client.extension.client
+import foo.starred.kontext.abstraction.client.extension.mainThread
+import foo.starred.kontext.api.storage.AbstractJsonStore
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.SharedConstants
 import net.minecraft.client.gui.components.toasts.SystemToast

@@ -3,7 +3,7 @@ package foo.starred.detexturify.config
 import com.teamresourceful.resourcefulconfigkt.api.ConfigDelegateProvider
 import com.teamresourceful.resourcefulconfigkt.api.RConfigKtEntry
 import com.teamresourceful.resourcefulconfigkt.api.builders.EntriesBuilder
-import foo.starred.snowbird.api.data.Observable
+import foo.starred.kontext.api.data.Observable
 import kotlin.reflect.KProperty
 
 fun <T> ConfigDelegateProvider<RConfigKtEntry<T>>.observe(): StateEntry<T> {
@@ -18,7 +18,7 @@ class StateEntry<T>(
         val state = Observable(delegate.get())
 
         delegate.onChange = { _, n -> state.value = n }
-        state.onChange { delegate.set(it) }
+        state.observe { delegate.set(it) }
 
         return ReactDelegate(state)
     }

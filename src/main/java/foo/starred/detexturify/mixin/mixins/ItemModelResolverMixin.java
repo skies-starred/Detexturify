@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.Objects;
 import java.util.Set;
 
-import static foo.starred.snowbird.api.PlayerKt.getPlayer;
+import static foo.starred.kontext.abstraction.client.extension.MinecraftClientExtensionsKt.client;
 
 @Mixin(ItemModelResolver.class)
 public class ItemModelResolverMixin {
@@ -50,17 +50,17 @@ public class ItemModelResolverMixin {
     private static boolean detexturify$component = DetexturifyConfig.INSTANCE.getRetextureType().getValue() == DetexturifyConfig.RetextureType.COMPONENT;
 
     static {
-        DetexturifyConfig.INSTANCE.getEnabled().onChange(bool -> {
+        DetexturifyConfig.INSTANCE.getEnabled().observe(bool -> {
             detexturify$bool = bool && DetexturifyConfig.INSTANCE.getRetexture().getValue();
             return Unit.INSTANCE;
         });
 
-        DetexturifyConfig.INSTANCE.getRetexture().onChange(bool -> {
+        DetexturifyConfig.INSTANCE.getRetexture().observe(bool -> {
             detexturify$bool = bool && DetexturifyConfig.INSTANCE.getEnabled().getValue();
             return Unit.INSTANCE;
         });
 
-        DetexturifyConfig.INSTANCE.getRetextureType().onChange(type -> {
+        DetexturifyConfig.INSTANCE.getRetextureType().observe(type -> {
             detexturify$component = type == DetexturifyConfig.RetextureType.COMPONENT;
             return Unit.INSTANCE;
         });
@@ -115,7 +115,7 @@ public class ItemModelResolverMixin {
 
         if (c0 == 0 || detexturify$katanas.contains(g)) {
             b.detexturify$special(0);
-            final LocalPlayer j = getPlayer();
+            final LocalPlayer j = client.player;
             return (j != null && j.getCooldowns().isOnCooldown(stack)) ? detexturify$sword$1 : detexturify$sword$3;
         }
 

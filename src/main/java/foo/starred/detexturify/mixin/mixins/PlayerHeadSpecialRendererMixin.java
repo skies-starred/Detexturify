@@ -23,12 +23,12 @@ public class PlayerHeadSpecialRendererMixin {
     private static boolean detexturify$bool = DetexturifyConfig.INSTANCE.getEnabled().getValue() && DetexturifyConfig.INSTANCE.getRetexture().getValue();
 
     static {
-        DetexturifyConfig.INSTANCE.getEnabled().onChange(bool -> {
+        DetexturifyConfig.INSTANCE.getEnabled().observe(bool -> {
             detexturify$bool = bool && DetexturifyConfig.INSTANCE.getRetexture().getValue();
             return Unit.INSTANCE;
         });
 
-        DetexturifyConfig.INSTANCE.getRetexture().onChange(bool -> {
+        DetexturifyConfig.INSTANCE.getRetexture().observe(bool -> {
             detexturify$bool = bool && DetexturifyConfig.INSTANCE.getEnabled().getValue();
             return Unit.INSTANCE;
         });

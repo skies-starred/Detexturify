@@ -11,12 +11,12 @@ import foo.starred.detexturify.pack.HypixelPackCache
 import foo.starred.detexturify.utils.NetworkUtils.request
 import foo.starred.kommand.IKommand
 import foo.starred.kommand.scopes.KommandCommandScope
-import foo.starred.snowbird.api.client
-import foo.starred.snowbird.api.held
-import foo.starred.snowbird.api.lie
-import foo.starred.snowbird.api.nextTick
-import foo.starred.snowbird.api.storage.AbstractJsonStore
-import foo.starred.snowbird.api.text.parser.impl.parse
+import foo.starred.kontext.abstraction.chat.message.MinecraftMessages
+import foo.starred.kontext.abstraction.client.extension.client
+import foo.starred.kontext.abstraction.client.extension.nextTick
+import foo.starred.kontext.abstraction.gui.MinecraftGui
+import foo.starred.kontext.api.storage.AbstractJsonStore
+import foo.starred.kontext.api.text.parser.impl.parse
 import foo.starred.updater.logic.source.impl.ModrinthUpdateSource
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
@@ -24,8 +24,8 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.SharedConstants
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import kotlin.jvm.optionals.getOrNull
 
 object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
@@ -37,7 +37,7 @@ object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
     const val discordUrl: String = "https://discord.gg/starred"
 
     @JvmField
-    val LOGGER: Logger = LogManager.getLogger(Detexturify::class.java)
+    val LOGGER: Logger = LoggerFactory.getLogger(Detexturify::class.java)
 
     @JvmField
     val JSON: AbstractJsonStore = AbstractJsonStore(modName, "detexturify/whitelist")
@@ -93,136 +93,135 @@ object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
     private fun kommand() {
         command(modId) {
             executes {
-                "<#FAB387>[Detexturify]<r> Available commands:".parse(true).lie()
+                MinecraftMessages.display("<#FAB387>[Detexturify]<r> Available commands:".parse(true))
 
-                " <dark_gray>- <green>/detexturify config <dark_gray>- <green>Opens config".parse().lie()
-                " <dark_gray>- <green>/detexturify whitelist <dark_gray>- <green>Whitelist items".parse().lie()
-                " <dark_gray>- <green>/detexturify blacklist <dark_gray>- <green>Blacklist items".parse().lie()
-                " <dark_gray>- <green>/detexturify replace <dark_gray>- <green>Replace item textures".parse().lie()
+                MinecraftMessages.display(" <dark_gray>- <green>/detexturify config <dark_gray>- <green>Opens config".parse())
+                MinecraftMessages.display(" <dark_gray>- <green>/detexturify whitelist <dark_gray>- <green>Whitelist items".parse())
+                MinecraftMessages.display(" <dark_gray>- <green>/detexturify blacklist <dark_gray>- <green>Blacklist items".parse())
+                MinecraftMessages.display(" <dark_gray>- <green>/detexturify replace <dark_gray>- <green>Replace item textures".parse())
             }
 
             "help" {
-                "<#FAB387>[Detexturify]<r> Available commands:".parse(true).lie()
+                MinecraftMessages.display("<#FAB387>[Detexturify]<r> Available commands:".parse(true))
 
-                " <dark_gray>- <green>/detexturify config <dark_gray>- <green>Opens config".parse().lie()
-                " <dark_gray>- <green>/detexturify whitelist <dark_gray>- <green>Whitelist items".parse().lie()
-                " <dark_gray>- <green>/detexturify blacklist <dark_gray>- <green>Blacklist items".parse().lie()
-                " <dark_gray>- <green>/detexturify replace <dark_gray>- <green>Replace item textures".parse().lie()
+                MinecraftMessages.display(" <dark_gray>- <green>/detexturify config <dark_gray>- <green>Opens config".parse())
+                MinecraftMessages.display(" <dark_gray>- <green>/detexturify whitelist <dark_gray>- <green>Whitelist items".parse())
+                MinecraftMessages.display(" <dark_gray>- <green>/detexturify blacklist <dark_gray>- <green>Blacklist items".parse())
+                MinecraftMessages.display(" <dark_gray>- <green>/detexturify replace <dark_gray>- <green>Replace item textures".parse())
             }
 
             "config" {
                 nextTick {
-                    //~ if >= 26.2 'setScreen(' -> 'gui.setScreen('
-                    client.setScreen(ResourcefulConfigScreen.getFactory(modId).apply(null))
+                    MinecraftGui.screen(ResourcefulConfigScreen.getFactory(modId).apply(null))
                 }
             }
 
             "whitelist".then {
                 "executes" {
-                    "<#FAB387>[Detexturify]<r> Whitelist commands:".parse(true).lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Whitelist commands:".parse(true))
 
-                    " <dark_gray>- <green>/detexturify whitelist list".parse().lie()
-                    " <dark_gray>- <green>/detexturify whitelist add".parse().lie()
-                    " <dark_gray>- <green>/detexturify whitelist remove".parse().lie()
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify whitelist list".parse())
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify whitelist add".parse())
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify whitelist remove".parse())
                 }
 
                 "add" {
-                    val held = held?.takeIf { !it.isEmpty } ?: return@invoke "<#FAB387>[Detexturify]<r> Not holding anything!".parse(true).lie()
-                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke "<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true).lie()
+                    val held = client.player?.mainHandItem?.takeIf { !it.isEmpty } ?: return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Not holding anything!".parse(true))
+                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true))
 
                     if (WHITELIST.value.contains(id)) {
-                        return@invoke "<#FAB387>[Detexturify]<r> Item already exists in whitelist!".parse(true).lie()
+                        return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Item already exists in whitelist!".parse(true))
                     }
 
                     WHITELIST.update { add(id) }
-                    "<#FAB387>[Detexturify]<r> Successfully added item to whitelist! You may need to change servers to view changes.".parse(true).lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Successfully added item to whitelist! You may need to change servers to view changes.".parse(true))
                 }
 
                 "remove" {
-                    val held = held?.takeIf { !it.isEmpty } ?: return@invoke "<#FAB387>[Detexturify]<r> Not holding anything!".parse(true).lie()
-                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke "<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true).lie()
+                    val held = client.player?.mainHandItem?.takeIf { !it.isEmpty } ?: return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Not holding anything!".parse(true))
+                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true))
 
                     if (!WHITELIST.value.contains(id)) {
-                        return@invoke "<#FAB387>[Detexturify]<r> Item does not exist in whitelist!".parse(true).lie()
+                        return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Item does not exist in whitelist!".parse(true))
                     }
 
                     WHITELIST.update { remove(id) }
-                    "<#FAB387>[Detexturify]<r> Successfully removed item from whitelist! You may need to change servers to view changes.".parse(true).lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Successfully removed item from whitelist! You may need to change servers to view changes.".parse(true))
                 }
 
                 "list" {
-                    "<#FAB387>[Detexturify]<r> Whitelisted items:".parse(true).lie()
-                    for (v in WHITELIST.value) " <dark_gray>- <green>$v".parse().lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Whitelisted items:".parse(true))
+                    for (v in WHITELIST.value) MinecraftMessages.display(" <dark_gray>- <green>$v".parse())
                 }
             }
 
             "blacklist".then {
                 "executes" {
-                    "<#FAB387>[Detexturify]<r> Blacklist commands:".parse(true).lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Blacklist commands:".parse(true))
 
-                    " <dark_gray>- <green>/detexturify blacklist list".parse().lie()
-                    " <dark_gray>- <green>/detexturify blacklist add".parse().lie()
-                    " <dark_gray>- <green>/detexturify blacklist remove".parse().lie()
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify blacklist list".parse())
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify blacklist add".parse())
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify blacklist remove".parse())
                 }
 
                 "add" {
-                    val held = held?.takeIf { !it.isEmpty } ?: return@invoke "<#FAB387>[Detexturify]<r> Not holding anything!".parse(true).lie()
-                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke "<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true).lie()
+                    val held = client.player?.mainHandItem?.takeIf { !it.isEmpty } ?: return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Not holding anything!".parse(true))
+                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true))
 
                     if (BLACKLIST.value.contains(id)) {
-                        return@invoke "<#FAB387>[Detexturify]<r> Item already exists in blacklist!".parse(true).lie()
+                        return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Item already exists in blacklist!".parse(true))
                     }
 
                     BLACKLIST.update { add(id) }
-                    "<#FAB387>[Detexturify]<r> Successfully added item to blacklist! You may need to change servers to view changes.".parse(true).lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Successfully added item to blacklist! You may need to change servers to view changes.".parse(true))
                 }
 
                 "remove" {
-                    val held = held?.takeIf { !it.isEmpty } ?: return@invoke "<#FAB387>[Detexturify]<r> Not holding anything!".parse(true).lie()
-                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke "<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true).lie()
+                    val held = client.player?.mainHandItem?.takeIf { !it.isEmpty } ?: return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Not holding anything!".parse(true))
+                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull() ?: return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true))
 
                     if (!BLACKLIST.value.contains(id)) {
-                        return@invoke "<#FAB387>[Detexturify]<r> Item does not exist in blacklist!".parse(true).lie()
+                        return@invoke MinecraftMessages.display("<#FAB387>[Detexturify]<r> Item does not exist in blacklist!".parse(true))
                     }
 
                     BLACKLIST.update { remove(id) }
-                    "<#FAB387>[Detexturify]<r> Successfully removed item from blacklist! You may need to change servers to view changes.".parse(true).lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Successfully removed item from blacklist! You may need to change servers to view changes.".parse(true))
                 }
 
                 "list" {
-                    "<#FAB387>[Detexturify]<r> Blacklisted items:".parse(true).lie()
-                    for (v in BLACKLIST.value) " <dark_gray>- <green>$v".parse().lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Blacklisted items:".parse(true))
+                    for (v in BLACKLIST.value) MinecraftMessages.display(" <dark_gray>- <green>$v".parse())
                 }
             }
 
             "replace".then {
                 executes {
-                    "<#FAB387>[Detexturify]<r> Replacement commands:".parse(true).lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Replacement commands:".parse(true))
 
-                    " <dark_gray>- <green>/detexturify replace list".parse().lie()
-                    " <dark_gray>- <green>/detexturify replace <skyblock_id> <item>".parse().lie()
-                    " <dark_gray>- <green>/detexturify replace remove <skyblock_id>".parse().lie()
-                    " <dark_gray>- <green>/detexturify replace clear".parse().lie()
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify replace list".parse())
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify replace <skyblock_id> <item>".parse())
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify replace remove <skyblock_id>".parse())
+                    MinecraftMessages.display(" <dark_gray>- <green>/detexturify replace clear".parse())
                 }
 
                 "list" {
-                    "<#FAB387>[Detexturify]<r> Custom replacements:".parse(true).lie()
-                    for ((k, v) in REPLACEMENTS.value) " <dark_gray>- <green>$k <dark_gray>-> <yellow>$v".parse().lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Custom replacements:".parse(true))
+                    for ((k, v) in REPLACEMENTS.value) MinecraftMessages.display(" <dark_gray>- <green>$k <dark_gray>-> <yellow>$v".parse())
                 }
 
                 "clear" {
                     val count = REPLACEMENTS.value.size
                     REPLACEMENTS.update { clear() }
-                    "<#FAB387>[Detexturify]<r> Cleared <green>$count<r> replacements! You may need to change servers to view changes.".parse(true).lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Cleared <green>$count<r> replacements! You may need to change servers to view changes.".parse(true))
                 }
 
                 "remove" {
                     string("id") {
                         val id = string("id").replace(':', '-')
-                        if (!REPLACEMENTS.value.containsKey(id)) return@string "<#FAB387>[Detexturify]<r> No replacement found for '<red>$id<r>'!".parse(true).lie()
+                        if (!REPLACEMENTS.value.containsKey(id)) return@string MinecraftMessages.display("<#FAB387>[Detexturify]<r> No replacement found for '<red>$id<r>'!".parse(true))
 
                         REPLACEMENTS.update { remove(id) }
-                        "<#FAB387>[Detexturify]<r> Successfully removed replacement for '<green>$id<r>'! You may need to change servers to view changes.".parse(true).lie()
+                        MinecraftMessages.display("<#FAB387>[Detexturify]<r> Successfully removed replacement for '<green>$id<r>'! You may need to change servers to view changes.".parse(true))
                     }.suggests { REPLACEMENTS.value.keys }
                 }
 
@@ -232,17 +231,17 @@ object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
                         val model = string("model")
 
                         REPLACEMENTS.update { put(id, model) }
-                        "<#FAB387>[Detexturify]<r> Successfully replaced '<green>$id<r>' with '<yellow>$model<r>'! You may need to change servers to view changes.".parse(true).lie()
+                        MinecraftMessages.display("<#FAB387>[Detexturify]<r> Successfully replaced '<green>$id<r>' with '<yellow>$model<r>'! You may need to change servers to view changes.".parse(true))
                     }.suggests { BuiltInRegistries.ITEM.keySet().map { it.path } }
                 }
 
                 "add" / "held" / string("model") {
-                    val held = held?.takeIf { !it.isEmpty } ?: return@string "<#FAB387>[Detexturify]<r> Not holding anything!".parse(true).lie()
-                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull()?.replace(':', '-') ?: return@string "<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true).lie()
+                    val held = client.player?.mainHandItem?.takeIf { !it.isEmpty } ?: return@string MinecraftMessages.display("<#FAB387>[Detexturify]<r> Not holding anything!".parse(true))
+                    val id = held.get(DataComponents.CUSTOM_DATA)?.copyTag()?.getString("id")?.getOrNull()?.replace(':', '-') ?: return@string MinecraftMessages.display("<#FAB387>[Detexturify]<r> Could not resolve SkyBlock ID of item!".parse(true))
                     val model = string("model")
 
                     REPLACEMENTS.update { put(id, model) }
-                    "<#FAB387>[Detexturify]<r> Successfully replaced '<green>$id<r>' with '<yellow>$model<r>'! You may need to change servers to view changes.".parse(true).lie()
+                    MinecraftMessages.display("<#FAB387>[Detexturify]<r> Successfully replaced '<green>$id<r>' with '<yellow>$model<r>'! You may need to change servers to view changes.".parse(true))
                 }.suggests { BuiltInRegistries.ITEM.keySet().map { it.path } }
             }
         }

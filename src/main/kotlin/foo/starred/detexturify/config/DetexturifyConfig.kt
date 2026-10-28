@@ -3,7 +3,7 @@ package foo.starred.detexturify.config
 import com.teamresourceful.resourcefulconfig.api.loader.Configurator
 import com.teamresourceful.resourcefulconfigkt.api.ConfigKt
 import foo.starred.detexturify.Detexturify
-import foo.starred.snowbird.utils.open
+import foo.starred.kontext.abstraction.client.impl.MinecraftClient
 
 object DetexturifyConfig : ConfigKt("detexturify/config") {
     override val name = Literal(Detexturify.modName)
@@ -63,7 +63,7 @@ object DetexturifyConfig : ConfigKt("detexturify/config") {
             text = "Join"
 
             onClick {
-                Detexturify.discordUrl.open()
+                MinecraftClient.url(Detexturify.discordUrl)
             }
         }
 
@@ -73,7 +73,7 @@ object DetexturifyConfig : ConfigKt("detexturify/config") {
             text = "Open page"
 
             onClick {
-                "https://github.com/skies-starred/detexturify".open()
+                MinecraftClient.url("https://github.com/skies-starred/detexturify")
             }
         }
 
@@ -83,7 +83,7 @@ object DetexturifyConfig : ConfigKt("detexturify/config") {
             text = "Open page"
 
             onClick {
-                "https://patreon.com/starredskies".open()
+                MinecraftClient.url("https://patreon.com/starredskies")
             }
         }
 
@@ -97,7 +97,7 @@ object DetexturifyConfig : ConfigKt("detexturify/config") {
             text = "Open page"
 
             onClick {
-                "https://modrinth.com/mod/athen".open()
+                MinecraftClient.url("https://modrinth.com/mod/athen")
             }
         }
 
@@ -107,7 +107,7 @@ object DetexturifyConfig : ConfigKt("detexturify/config") {
             text = "Open page"
 
             onClick {
-                "https://modrinth.com/mod/jec".open()
+                MinecraftClient.url("https://modrinth.com/mod/jec")
             }
         }
 

@@ -15,12 +15,12 @@ public class GuiGraphicsMixin {
     private static boolean detexturify$bool = DetexturifyConfig.INSTANCE.getEnabled().getValue() && DetexturifyConfig.INSTANCE.getVanillaTooltip().getValue();
 
     static {
-        DetexturifyConfig.INSTANCE.getEnabled().onChange(bool -> {
+        DetexturifyConfig.INSTANCE.getEnabled().observe(bool -> {
             detexturify$bool = bool && DetexturifyConfig.INSTANCE.getVanillaTooltip().getValue();
             return Unit.INSTANCE;
         });
 
-        DetexturifyConfig.INSTANCE.getVanillaTooltip().onChange(bool -> {
+        DetexturifyConfig.INSTANCE.getVanillaTooltip().observe(bool -> {
             detexturify$bool = bool && DetexturifyConfig.INSTANCE.getEnabled().getValue();
             return Unit.INSTANCE;
         });
