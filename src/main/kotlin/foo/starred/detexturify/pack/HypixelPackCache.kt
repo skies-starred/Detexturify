@@ -7,7 +7,9 @@ import foo.starred.detexturify.utils.NetworkUtils.download
 import foo.starred.detexturify.utils.NetworkUtils.request
 import foo.starred.kontext.abstraction.client.extension.client
 import foo.starred.kontext.abstraction.client.extension.mainThread
-import foo.starred.kontext.api.storage.AbstractJsonStore
+import foo.starred.kontext.api.storage.impl.generic.extension.string
+import foo.starred.kontext.api.storage.impl.generic.impl.GenericJsonStore
+import foo.starred.kontext.api.storage.impl.generic.property.base.AbstractStorageProperty
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.SharedConstants
 import net.minecraft.client.gui.components.toasts.SystemToast
@@ -30,8 +32,8 @@ import java.security.MessageDigest
 import java.util.Optional
 
 object HypixelPackCache {
-    private val SCRIBBLE: AbstractJsonStore = AbstractJsonStore(Detexturify.modName, "detexturify/hypixel-pack")
-    private val URL: AbstractJsonStore.Value<String> = SCRIBBLE.string("url")
+    private val SCRIBBLE: GenericJsonStore = GenericJsonStore(Detexturify.modName, "detexturify/hypixel-pack")
+    private val URL: AbstractStorageProperty<String> = SCRIBBLE.string("url")
 
     private val dir: File = FabricLoader.getInstance().configDir.resolve(Detexturify.modId).resolve("pack-cache").toFile()
 

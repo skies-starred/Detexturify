@@ -15,7 +15,11 @@ import foo.starred.kontext.abstraction.chat.message.MinecraftMessages
 import foo.starred.kontext.abstraction.client.extension.client
 import foo.starred.kontext.abstraction.client.extension.nextTick
 import foo.starred.kontext.abstraction.gui.MinecraftGui
-import foo.starred.kontext.api.storage.AbstractJsonStore
+import foo.starred.kontext.api.storage.impl.generic.extension.mutableMap
+import foo.starred.kontext.api.storage.impl.generic.extension.mutableSet
+import foo.starred.kontext.api.storage.impl.generic.extension.string
+import foo.starred.kontext.api.storage.impl.generic.impl.GenericJsonStore
+import foo.starred.kontext.api.storage.impl.generic.property.base.AbstractStorageProperty
 import foo.starred.kontext.api.text.parser.impl.parse
 import foo.starred.updater.logic.source.impl.ModrinthUpdateSource
 import net.fabricmc.api.ClientModInitializer
@@ -40,19 +44,19 @@ object Detexturify : ClientModInitializer, IKommand<FabricClientCommandSource> {
     val LOGGER: Logger = LoggerFactory.getLogger(Detexturify::class.java)
 
     @JvmField
-    val JSON: AbstractJsonStore = AbstractJsonStore(modName, "detexturify/whitelist")
+    val JSON: GenericJsonStore = GenericJsonStore(modName, "detexturify/whitelist")
 
     @JvmField
-    val LAST_VERSION: AbstractJsonStore.Value<String> = JSON.string("last_minecraft_version")
+    val LAST_VERSION: AbstractStorageProperty<String> = JSON.string("last_minecraft_version")
 
     @JvmField
-    val WHITELIST: AbstractJsonStore.Value<MutableSet<String>> = JSON.mutableSet("whitelist", Codec.STRING)
+    val WHITELIST: AbstractStorageProperty<MutableSet<String>> = JSON.mutableSet("whitelist", Codec.STRING)
 
     @JvmField
-    val BLACKLIST: AbstractJsonStore.Value<MutableSet<String>> = JSON.mutableSet("blacklist", Codec.STRING)
+    val BLACKLIST: AbstractStorageProperty<MutableSet<String>> = JSON.mutableSet("blacklist", Codec.STRING)
 
     @JvmField
-    val REPLACEMENTS: AbstractJsonStore.Value<MutableMap<String, String>> = JSON.mutableMap("replacements", Codec.STRING, Codec.STRING)
+    val REPLACEMENTS: AbstractStorageProperty<MutableMap<String, String>> = JSON.mutableMap("replacements", Codec.STRING, Codec.STRING)
 
     @JvmField
     var MAP: Map<String, SkyBlockItem> = mapOf()
