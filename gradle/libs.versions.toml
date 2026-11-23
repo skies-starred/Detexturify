@@ -6,9 +6,9 @@ devauth = "1.2.2"
 
 kbus = "2026.09.3"
 kommand = "2026.09.2"
-kontext = "2026.10.10"
+kontext = "2026.11.4"
 klassgraph = "2026.10.1"
-cascade = "2026.10.1"
+cascade = "2026.11.3"
 updater = "2026.10.3"
 
 fabric-loader = "0.19.3"
