@@ -35,7 +35,7 @@ object Detexturify : ClientModInitializer {
     }
 
     object Data {
-        const val version: String = /*$ mod_version*/ "0.1.4"
+        const val version: String = /*$ mod_version*/ "0.1.5"
         const val name: String = /*$ mod_name*/ "Detexturify"
         const val id: String = /*$ mod_id*/ "detexturify"
 
